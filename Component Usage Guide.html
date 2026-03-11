@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Component Usage Guide — Acme Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700;800;900&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --brand:#1955A6;
+  --dark:#0B2F5C;
+  --light:#E7EFF7;
+  --n900:#252525;--n800:#383838;--n700:#505050;--n500:#909090;
+  --n300:#D0D0D0;--n200:#E0E0E0;--n100:#F0F0F0;--n50:#F7F7F7;
+  --error:#FF4242;--success:#529604;--warning:#FF8505;--info:#1FA4B6;
+  --radius:8px;
+  --sidebar:260px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Mulish',sans-serif;color:var(--n800);background:var(--n50);display:flex;min-height:100vh;}
+
+/* ── Sidebar ── */
+.sidebar{
+  width:var(--sidebar);flex-shrink:0;position:fixed;top:0;left:0;height:100vh;
+  background:var(--dark);display:flex;flex-direction:column;overflow-y:auto;z-index:100;
+}
+.sidebar-header{
+  padding:32px 24px 24px;border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.doc-num{
+  font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;
+  color:rgba(255,255,255,0.4);margin-bottom:8px;
+}
+.sidebar-title{
+  font-size:16px;font-weight:800;color:#fff;line-height:1.3;
+}
+.sidebar-sub{
+  font-size:11px;color:rgba(255,255,255,0.45);margin-top:6px;font-weight:500;
+}
+.nav-section{padding:20px 16px 8px;font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);}
+.nav-link{
+  display:block;padding:9px 16px;margin:1px 8px;border-radius:6px;
+  font-size:13px;font-weight:600;color:rgba(255,255,255,0.6);
+  text-decoration:none;transition:all 0.15s;
+}
+.nav-link:hover{background:#255799;color:#fff;}
+.sidebar-footer{
+  margin-top:auto;padding:20px 24px;border-top:1px solid rgba(255,255,255,0.08);
+  font-size:11px;color:rgba(255,255,255,0.25);font-weight:600;
+}
+.ds-logo{
+  font-size:13px;font-weight:800;color:rgba(255,255,255,0.7);
+  letter-spacing:0.02em;
+}
+
+/* ── Main content ── */
+.main{margin-left:var(--sidebar);flex:1;min-width:0;}
+
+/* ── Hero ── */
+.hero{
+  background:linear-gradient(135deg, var(--dark) 0%, var(--brand) 100%);
+  padding:64px 64px 56px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-60px;right:-40px;
+  width:400px;height:400px;border-radius:50%;
+  background:rgba(255,255,255,0.04);
+}
+.hero::after{
+  content:'';position:absolute;bottom:-80px;right:80px;
+  width:240px;height:240px;border-radius:50%;
+  background:rgba(255,255,255,0.03);
+}
+.hero-eyebrow{
+  font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(255,255,255,0.5);margin-bottom:16px;
+}
+.hero-title{
+  font-family:'DM Serif Display',serif;font-size:52px;line-height:1.1;
+  color:#fff;margin-bottom:16px;position:relative;z-index:1;
+}
+.hero-title em{font-style:italic;color:rgba(255,255,255,0.7);}
+.hero-sub{
+  font-size:15px;color:rgba(255,255,255,0.65);max-width:540px;
+  line-height:1.6;font-weight:500;position:relative;z-index:1;
+}
+.hero-meta{
+  margin-top:32px;display:flex;gap:32px;position:relative;z-index:1;
+}
+.hero-stat{border-left:2px solid rgba(255,255,255,0.2);padding-left:16px;}
+.hero-stat-num{font-size:22px;font-weight:800;color:#fff;}
+.hero-stat-label{font-size:11px;color:rgba(255,255,255,0.45);font-weight:600;margin-top:2px;}
+
+/* ── Content ── */
+.content{padding:32px 64px 56px;max-width:1000px;}
+
+/* ── Section ── */
+.section{margin-bottom:56px;}
+.section-header{
+  display:flex;align-items:center;gap:14px;margin-bottom:24px;padding-bottom:16px;
+  border-bottom:2px solid var(--n200);
+}
+.section-num{
+  width:32px;height:32px;border-radius:8px;background:var(--brand);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;color:#fff;flex-shrink:0;
+}
+.section-title{font-size:24px;font-weight:800;color:var(--n900);}
+.section-desc{font-size:14px;color:var(--n500);margin-top:4px;}
+
+h2.sh{
+  font-size:18px;font-weight:800;color:var(--n900);margin:40px 0 16px;
+  display:flex;align-items:center;gap:10px;
+}
+h2.sh::before{display:none;}
+h3.comp-name{
+  font-size:16px;font-weight:800;color:var(--n900);
+  margin:28px 0 12px;padding:12px 16px;
+  background:var(--n50);border:1px solid var(--n200);border-radius:var(--radius);
+}
+
+/* ── Tables ── */
+.doc-table{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0 24px;}
+.doc-table th{
+  text-align:left;padding:10px 14px;font-size:11px;font-weight:800;
+  letter-spacing:0.06em;text-transform:uppercase;color:var(--brand);
+  background:var(--light);border-bottom:2px solid var(--brand);
+}
+.doc-table td{
+  padding:10px 14px;border-bottom:1px solid var(--n200);
+  color:var(--n800);line-height:1.5;vertical-align:top;
+}
+.doc-table tr:nth-child(even) td{background:var(--n50);}
+.doc-table tr:hover td{background:var(--light);}
+.doc-table code{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--n100);padding:2px 6px;border-radius:4px;color:#C62828;
+}
+
+/* ── Callout boxes ── */
+.callout{
+  border-radius:var(--radius);padding:16px 20px;margin:16px 0;
+  border-left:3px solid;display:flex;gap:12px;align-items:flex-start;
+}
+.callout.info{background:#EFF8FF;border-color:#1FA4B6;}
+.callout.warning{background:#FFF8EE;border-color:#FF8505;}
+.callout.success{background:#F0F9E8;border-color:#529604;}
+.callout.danger{background:#FFF0F0;border-color:#FF4242;}
+.callout-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.callout-text{font-size:13px;line-height:1.6;color:var(--n800);}
+.callout-text strong{font-weight:800;}
+
+/* ── Component card ── */
+.comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0;}
+.comp-card{
+  background:#fff;border:1px solid var(--n200);border-radius:var(--radius);
+  padding:20px;
+}
+.comp-card-label{font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--n500);margin-bottom:6px;}
+.comp-card-value{font-size:13px;color:var(--n800);line-height:1.5;}
+.comp-card-value code{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--n100);padding:2px 6px;border-radius:4px;color:#C62828;}
+
+/* ── Bullets ── */
+.doc-list{list-style:none;margin:8px 0 16px;padding:0;}
+.doc-list li{
+  padding:6px 0 6px 20px;position:relative;font-size:13px;
+  color:var(--n800);line-height:1.5;border-bottom:1px solid var(--n100);
+}
+.doc-list li:last-child{border-bottom:none;}
+.doc-list li::before{
+  content:'→';position:absolute;left:0;color:var(--brand);font-weight:800;font-size:12px;
+}
+
+/* ── Token pill ── */
+.token-name{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  background:var(--n100);padding:3px 8px;border-radius:4px;color:var(--dark);font-weight:500;
+}
+.color-swatch{
+  display:inline-block;width:14px;height:14px;border-radius:3px;
+  vertical-align:middle;margin-right:6px;border:1px solid rgba(0,0,0,0.1);
+}
+
+/* ── Check items ── */
+.check-list{list-style:none;margin:8px 0 16px;}
+.check-list li{
+  padding:7px 0 7px 28px;position:relative;font-size:13px;
+  color:var(--n800);line-height:1.5;border-bottom:1px solid var(--n100);
+}
+.check-list li:last-child{border-bottom:none;}
+.check-list li::before{
+  content:'□';position:absolute;left:0;color:var(--n300);font-size:16px;line-height:1;top:8px;
+}
+
+/* ── Icon grid ── */
+.icon-table{width:100%;border-collapse:collapse;font-size:13px;}
+.icon-table th{text-align:left;padding:8px 12px;font-size:11px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--brand);background:var(--light);border-bottom:2px solid var(--brand);}
+.icon-table td{padding:8px 12px;border-bottom:1px solid var(--n100);color:var(--n800);vertical-align:middle;}
+.icon-table tr:nth-child(even) td{background:var(--n50);}
+.icon-name{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--dark);}
+.icon-component{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--n500);}
+
+/* ── Contrast badge ── */
+.pass{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:800;background:#EDF7E0;color:#336600;}
+.warn{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:800;background:#FFF8EE;color:#995500;}
+
+/* ── Size pill ── */
+.size-pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;background:var(--light);color:var(--brand);}
+
+/* ── Print ── */
+@media print{
+  .sidebar{display:none;}
+  .main{margin-left:0;}
+  .hero{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .doc-table th{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .section{page-break-inside:avoid;}
+}
+
+/* ── Accent variants ── */
+.accent-bar{display:none;}
+
+/* divider */
+.divider{height:1px;background:var(--n200);margin:32px 0;}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D0D0D0; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #B0B0B0; }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <a href="#" style="display:flex;flex-direction:column;align-items:center;padding:20px 20px 14px;border-bottom:1px solid rgba(255,255,255,0.08);text-decoration:none;">
+    <svg viewBox="0 0 410.41 145.93" width="160" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="405.05 17.81 13.93 32.05 30.85 124.65 393.14 130.82 405.05 17.81" fill="rgba(0,0,0,0.4)"/>
+      <polygon points="398.13 9.93 7 24.18 23.92 116.77 386.22 122.94 398.13 9.93" fill="#8abae4"/>
+      <g>
+        <path fill="#0B2F5C" d="M83.11,89.21c-3,2.45-13.12,10.92-16.76,10.92-4.43,0-13.6-10.76-13.91-19.23-.63-20.37,40.47-41.24,58.81-41.73,7.27-.16,10.28,5.87,10.28,7.82s-4.11,3.59-5.53,4.07c3,1.3,4.58,3.1,4.58,6.68,0,5.22-13.75,16.63-13.75,24.29,0,2.77,2.37,3.91,4.9,3.91,6.64,0,15.65-8.31,22.45-13.04l1.26,6.03c-6.8,7.99-27.98,25.43-35.73,25.43-5.22,0-7.59-3.91-7.59-8.64,0-5.22,3.79-13.85,5.85-18.26l-.32-.33-14.54,12.06ZM63.98,84.97c.16.81.79,3.75,3.16,3.26,3.16-.65,8.06-.16,39.36-32.76l-.32-.33c-37.62,11.9-42.21,21.84-42.21,29.83Z"/>
+        <path fill="#0B2F5C" d="M151.72,69.65c-3.48,2.61-6.32,5.05-6.32,9.62,0,3.75,3.79,8.8,12.01,8.8,12.01,0,25.77-11.41,34.94-18.74l1.9,6.36c-9.64,10.59-27.35,26.73-42.37,26.73-12.17,0-18.02-11.74-18.02-23.8,0-13.69,4.74-18.74,15.02-26.73,7.11-5.54,22.29-14.34,31.14-14.34,4.9,0,7.11,2.61,7.11,7.5,0,8.96-12.49,21.51-16.76,21.51-3.64,0-5.22-4.07-5.37-7.17l-13.28,10.27Z"/>
+        <path fill="#0B2F5C" d="M244.52,90.51c-3.64,3.59-9.33,10.27-14.7,10.27-3.79,0-6.8-2.93-6.96-6.85-.16-4.73,3.64-12.22,13.91-28.36.32-.33.95-1.63.95-2.12,0-.65-.47-1.14-1.11-1.14-1.58,0-5.06,3.91-6.17,5.05-8.22,8.96-17.07,18.74-24.5,28.2-1.74,2.12-3.95,4.56-6.8,4.56-7.59,0-9.8-12.71-9.8-18.58.16-15.97,16.92-37.81,26.4-36.51,2.37.33,7.11.33,7.11,3.75s-4.43,8.15-6.32,10.43c-2.85,3.42-6.32,6.36-8.69,9.94-1.74,2.44-4.58,5.05-4.58,8.48,0,.33.47,1.47,1.11,1.47.79,0,2.69-2.12,3.16-2.61,7.75-8.31,35.88-37.33,46.16-37.33,4.27,0,6.48,3.26,6.48,7.5,0,7.17-11.22,20.37-14.7,26.73l.32.33,35.1-28.52c1.58-1.3,5.53-4.56,7.43-4.56,1.26,0,2.85,3.91,3.32,4.56,1.11,1.79,2.85,4.24,2.85,6.52,0,2.77-3.16,6.36-4.9,8.31-12.33,14.02-13.28,16.63-13.44,20.37-.16,1.96,1.9,4.56,3.79,4.08,3.32-.81,5.06-.81,24.5-14.51l.95,7.66c-7.43,6.03-30.19,25.26-39.05,25.26-4.74,0-8.06-4.73-8.06-9.45,0-8.15,7.75-19.72,11.7-26.41l-.32-.33-25.14,23.8Z"/>
+        <path fill="#0B2F5C" d="M361.98,76c-9.64,11.57-27.03,26.89-42.68,26.89-11.54,0-16.92-10.59-17.23-21.35-.63-21.35,22.29-43.19,42.84-43.03,5.06,0,11.38,1.3,11.38,7.82,0,7.99-7.75,20.05-38.1,30.32l-.32,3.59c-.47,6.19,4.74,8.31,9.8,8.31,11.22,0,24.5-11.9,32.88-18.74l1.42,6.19ZM342.37,49.76c0-1.14-.79-2.12-1.9-1.79-7.9,2.12-17.07,9.94-21.34,20.7,13.91-4.89,23.4-16.14,23.24-18.91Z"/>
+      </g>
+    </svg>
+  </a>
+  <div class="nav-section" style="margin-top:20px;">Contents</div>
+  <a href="#overview" class="nav-link">Overview</a><a href="#quickref" class="nav-link">Quick Reference</a><a href="#alert" class="nav-link">Alert</a><a href="#avatar" class="nav-link">Avatar</a><a href="#badge" class="nav-link">Badge</a><a href="#button" class="nav-link">Button</a><a href="#card" class="nav-link">Card</a><a href="#checkbox" class="nav-link">Checkbox</a><a href="#countbadge" class="nav-link">CountBadge</a><a href="#datatable" class="nav-link">DataTable</a><a href="#dropdown" class="nav-link">Dropdown</a><a href="#formlayout" class="nav-link">FormLayout</a><a href="#input" class="nav-link">Input</a><a href="#modal" class="nav-link">Modal</a><a href="#navbar" class="nav-link">Navbar</a><a href="#radio" class="nav-link">Radio</a><a href="#statcard" class="nav-link">StatCard</a><a href="#tabbar" class="nav-link">TabBar</a><a href="#toggle" class="nav-link">Toggle</a>
+  <div class="sidebar-footer">
+    <div class="ds-logo">Acme DS · v1.0</div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="hero">
+    <div class="hero-eyebrow">Acme Design System</div>
+    <h1 class="hero-title">Component Usage <em>Guide</em></h1>
+    <p class="hero-sub">When and how to use every component in the Acme Design System. The canonical reference for designers and developers.</p>
+  </div>
+
+  <div class="content">
+    
+<div id="overview" class="section">
+  <div class="accent-bar"></div>
+  <p style="font-size:15px;color:var(--n700);line-height:1.7;margin-bottom:24px;">This guide defines when and how to use each component in the Acme Design System. Follow these guidelines to ensure consistency across all product surfaces.</p>
+  <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-text"><strong>Golden rule:</strong> Always use the system component. Never build custom UI for something the system already solves. If you need something new, propose it as a design system addition.</div></div>
+</div>
+
+<div id="quickref" class="section">
+  <h2 class="sh">Quick Reference</h2>
+  <table class="doc-table">
+    <thead><tr><th>Component</th><th>Variants</th><th>Sizes</th><th>States</th></tr></thead>
+    <tbody>
+  <tr>
+    <td><strong>Alert</strong></td>
+    <td>Info · Success · Warning · Error</td>
+    <td><span class="size-pill">Full width</span></td>
+    <td>With / without dismiss</td>
+  </tr>
+  <tr>
+    <td><strong>Avatar</strong></td>
+    <td>6 colors × 2 shades (Light/Dark)</td>
+    <td><span class="size-pill">SM 24px · MD 32px · LG 40px</span></td>
+    <td>N/A</td>
+  </tr>
+  <tr>
+    <td><strong>Badge</strong></td>
+    <td>Default (dot) · No-dot · Pill</td>
+    <td><span class="size-pill">Auto</span></td>
+    <td>N/A</td>
+  </tr>
+  <tr>
+    <td><strong>Button</strong></td>
+    <td>Primary · Secondary · Ghost · Danger · Ghost-Danger</td>
+    <td><span class="size-pill">SM · MD · LG</span></td>
+    <td>Default · Hover · Active · Focus · Disabled</td>
+  </tr>
+  <tr>
+    <td><strong>Card</strong></td>
+    <td>Default · Hover</td>
+    <td><span class="size-pill">Fixed width, auto height</span></td>
+    <td>Default · Hover</td>
+  </tr>
+  <tr>
+    <td><strong>Checkbox</strong></td>
+    <td>Standalone · With Label · With Description · Group</td>
+    <td><span class="size-pill">18×18px fixed</span></td>
+    <td>Default · Checked · Indeterminate · Disabled</td>
+  </tr>
+  <tr>
+    <td><strong>CountBadge</strong></td>
+    <td>6 colors × 2 shades</td>
+    <td><span class="size-pill">Auto</span></td>
+    <td>N/A</td>
+  </tr>
+  <tr>
+    <td><strong>DataTable</strong></td>
+    <td>5 density variants + Loading / Empty / FilterActive</td>
+    <td><span class="size-pill">Full width</span></td>
+    <td>Default · Loading · Empty · FilterActive</td>
+  </tr>
+  <tr>
+    <td><strong>Dropdown</strong></td>
+    <td>Simple · With Icons · Grouped · FilterSelect · SortSelect</td>
+    <td><span class="size-pill">Auto</span></td>
+    <td>Default · Open · Hover</td>
+  </tr>
+  <tr>
+    <td><strong>FormLayout</strong></td>
+    <td>Single column · Two column · Block</td>
+    <td><span class="size-pill">Full width</span></td>
+    <td>N/A</td>
+  </tr>
+  <tr>
+    <td><strong>Input</strong></td>
+    <td>Text · Select · Textarea</td>
+    <td><span class="size-pill">MD (fixed)</span></td>
+    <td>Default · Hover · Focus · Error · Disabled</td>
+  </tr>
+  <tr>
+    <td><strong>Modal</strong></td>
+    <td>Confirmation · Form · Destructive</td>
+    <td><span class="size-pill">480px wide</span></td>
+    <td>Open · Closed</td>
+  </tr>
+  <tr>
+    <td><strong>Navbar</strong></td>
+    <td>Light · Dark</td>
+    <td><span class="size-pill">Full width · 52px height</span></td>
+    <td>Default</td>
+  </tr>
+  <tr>
+    <td><strong>Radio</strong></td>
+    <td>Vertical · Horizontal · Card</td>
+    <td><span class="size-pill">18×18px fixed</span></td>
+    <td>Default · Selected · Disabled</td>
+  </tr>
+  <tr>
+    <td><strong>StatCard</strong></td>
+    <td>Default · Trend Up · Trend Down</td>
+    <td><span class="size-pill">Fixed width</span></td>
+    <td>N/A</td>
+  </tr>
+  <tr>
+    <td><strong>TabBar</strong></td>
+    <td>Light · Dark · Pill · Counts</td>
+    <td><span class="size-pill">Hug width</span></td>
+    <td>Default · Hover · Active · Disabled</td>
+  </tr>
+  <tr>
+    <td><strong>Toggle</strong></td>
+    <td>Default · With Label</td>
+    <td><span class="size-pill">32×18px fixed</span></td>
+    <td>On · Off · Disabled</td>
+  </tr></tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2 class="sh">Component Details</h2>
+  
+  
+  <div id="alert">
+    <h3 class="comp-name">Alert</h3>
+    <div class="comp-grid">
+      <div class="comp-card"><div class="comp-card-label">When to use</div><div class="comp-card-value">Use for page-level feedback messages. Always place at the top of content. Use correct semantic color.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Don'ts</div><div class="comp-card-value">Don't use Alert for inline field validation — use Input error state.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Figma properties</div><div class="comp-card-value"><code>Type, Dismissible</code></div></div>
+      <div class="comp-card"><div class="comp-card-label">CSS class</div><div class="comp-card-value"><code>.alert .alert-info / .alert-success / .alert-warning / .alert-error</code></div></div>
+    </div>
+  </div>
+  <div id="avatar">
+    <h3 class="comp-name">Avatar</h3>
+    <div class="comp-grid">
+      <div class="comp-card"><div class="comp-card-label">When to use</div><div class="comp-card-value">Use to represent a user or entity. Match shade to surface: Light on dark bg, Dark on light bg.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Don'ts</div><div class="comp-card-value">Don't use Avatar as decorative element without user context.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Figma properties</div><div class="comp-card-value"><code>Size, Shade, Color</code></div></div>
+      <div class="comp-card"><div class="comp-card-label">CSS class</div><div class="comp-card-value"><code>.avatar .avatar-md .avatar-brand-dark etc.</code></div></div>
+    </div>
+  </div>
+  <div id="badge">
+    <h3 class="comp-name">Badge</h3>
+    <div class="comp-grid">
+      <div class="comp-card"><div class="comp-card-label">When to use</div><div class="comp-card-value">Use to label or categorize items. Match color to semantic meaning: Brand=active, Success=complete, Error=failed, Warning=attention, Neutral=inactive.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Don'ts</div><div class="comp-card-value">Don't use more than 3 badge colors in the same view.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Figma properties</div><div class="comp-card-value"><code>Color, Style</code></div></div>
+      <div class="comp-card"><div class="comp-card-label">CSS class</div><div class="comp-card-value"><code>.badge .badge-brand / .badge-success / .badge-error etc.</code></div></div>
+    </div>
+  </div>
+  <div id="button">
+    <h3 class="comp-name">Button</h3>
+    <div class="comp-grid">
+      <div class="comp-card"><div class="comp-card-label">When to use</div><div class="comp-card-value">Use Primary for the single most important action per view. Secondary for supporting actions. Ghost for low-emphasis tertiary actions. Danger for destructive irreversible actions.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Don'ts</div><div class="comp-card-value">Don't use more than one Primary per section. Don't use Danger for non-destructive actions. Don't disable without explaining why.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Figma properties</div><div class="comp-card-value"><code>Type, State, Size, Icon</code></div></div>
+      <div class="comp-card"><div class="comp-card-label">CSS class</div><div class="comp-card-value"><code>.btn .btn-primary / .btn-secondary / .btn-ghost / .btn-danger</code></div></div>
+    </div>
+  </div>
+  <div id="card">
+    <h3 class="comp-name">Card</h3>
+    <div class="comp-grid">
+      <div class="comp-card"><div class="comp-card-label">When to use</div><div class="comp-card-value">Use to group related content. Hover state is automatic on interactive cards.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Don'ts</div><div class="comp-card-value">Don't nest cards inside cards.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Figma properties</div><div class="comp-card-value"><code>Shadow</code></div></div>
+      <div class="comp-card"><div class="comp-card-label">CSS class</div><div class="comp-card-value"><code>.card</code></div></div>
+    </div>
+  </div>
+  <div id="checkbox">
+    <h3 class="comp-name">Checkbox</h3>
+    <div class="comp-grid">
+      <div class="comp-card"><div class="comp-card-label">When to use</div><div class="comp-card-value">Use for multi-select options. Use groups for related choices.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Don'ts</div><div class="comp-card-value">Don't use for single binary choices — Toggle is more appropriate.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Figma properties</div><div class="comp-card-value"><code>State, Label, Description</code></div></div>
+      <div class="comp-card"><div class="comp-card-label">CSS class</div><div class="comp-card-value"><code>.checkbox</code></div></div>
+    </div>
+  </div>
+  <div id="countbadge">
+    <h3 class="comp-name">CountBadge</h3>
+    <div class="comp-grid">
+      <div class="comp-card"><div class="comp-card-label">When to use</div><div class="comp-card-value">Use inside TabBar=Counts or anywhere a numeric count needs semantic color. Palette matches Avatar.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Don'ts</div><div class="comp-card-value">Don't use for non-numeric content.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Figma properties</div><div class="comp-card-value"><code>Shade, Color, Count</code></div></div>
+      <div class="comp-card"><div class="comp-card-label">CSS class</div><div class="comp-card-value"><code>.badge (pill)</code></div></div>
+    </div>
+  </div>
+  <div id="datatable">
+    <h3 class="comp-name">DataTable</h3>
+    <div class="comp-grid">
+      <div class="comp-card"><div class="comp-card-label">When to use</div><div class="comp-card-value">Use for structured tabular data with sorting and filtering. Choose density by data complexity.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Don'ts</div><div class="comp-card-value">Don't use DataTable for fewer than 3 columns — use a list instead.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Figma properties</div><div class="comp-card-value"><code>Density, State</code></div></div>
+      <div class="comp-card"><div class="comp-card-label">CSS class</div><div class="comp-card-value"><code>.data-table</code></div></div>
+    </div>
+  </div>
+  <div id="dropdown">
+    <h3 class="comp-name">Dropdown</h3>
+    <div class="comp-grid">
+      <div class="comp-card"><div class="comp-card-label">When to use</div><div class="comp-card-value">Use when space is limited and options need to be hidden. Use Grouped variant for categorized options.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Don'ts</div><div class="comp-card-value">Don't use Dropdown for navigation — use Tabs or Nav.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Figma properties</div><div class="comp-card-value"><code>Style, State</code></div></div>
+      <div class="comp-card"><div class="comp-card-label">CSS class</div><div class="comp-card-value"><code>.dropdown</code></div></div>
+    </div>
+  </div>
+  <div id="formlayout">
+    <h3 class="comp-name">FormLayout</h3>
+    <div class="comp-grid">
+      <div class="comp-card"><div class="comp-card-label">When to use</div><div class="comp-card-value">Use to structure input forms consistently. Two-column for short related fields, single for long inputs.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Don'ts</div><div class="comp-card-value">Don't mix column counts randomly within the same form.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Figma properties</div><div class="comp-card-value"><code>Layout</code></div></div>
+      <div class="comp-card"><div class="comp-card-label">CSS class</div><div class="comp-card-value"><code>.form-layout .cols-2</code></div></div>
+    </div>
+  </div>
+  <div id="input">
+    <h3 class="comp-name">Input</h3>
+    <div class="comp-grid">
+      <div class="comp-card"><div class="comp-card-label">When to use</div><div class="comp-card-value">Use for any text entry. Add a label above and helper text below. Use Error state with a message on validation failure.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Don'ts</div><div class="comp-card-value">Don't use placeholder as a label substitute. Don't show error state without an error message.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Figma properties</div><div class="comp-card-value"><code>State, Label, Placeholder, HelperText, ErrorText</code></div></div>
+      <div class="comp-card"><div class="comp-card-label">CSS class</div><div class="comp-card-value"><code>.input / .input.is-error</code></div></div>
+    </div>
+  </div>
+  <div id="modal">
+    <h3 class="comp-name">Modal</h3>
+    <div class="comp-grid">
+      <div class="comp-card"><div class="comp-card-label">When to use</div><div class="comp-card-value">Use for focused tasks that interrupt the main flow. Destructive variant requires explicit confirmation text input.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Don'ts</div><div class="comp-card-value">Don't put multi-step flows in a modal. Don't open modals from modals.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Figma properties</div><div class="comp-card-value"><code>Type, Title, Footer buttons</code></div></div>
+      <div class="comp-card"><div class="comp-card-label">CSS class</div><div class="comp-card-value"><code>.modal .modal-header .modal-body .modal-footer</code></div></div>
+    </div>
+  </div>
+  <div id="navbar">
+    <h3 class="comp-name">Navbar</h3>
+    <div class="comp-grid">
+      <div class="comp-card"><div class="comp-card-label">When to use</div><div class="comp-card-value">Use at the top of every page. Light for standard surfaces, Dark for brand emphasis.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Don'ts</div><div class="comp-card-value">Don't modify logo or right-side actions without design approval.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Figma properties</div><div class="comp-card-value"><code>Theme</code></div></div>
+      <div class="comp-card"><div class="comp-card-label">CSS class</div><div class="comp-card-value"><code>.navbar / .navbar.navbar-dark</code></div></div>
+    </div>
+  </div>
+  <div id="radio">
+    <h3 class="comp-name">Radio</h3>
+    <div class="comp-grid">
+      <div class="comp-card"><div class="comp-card-label">When to use</div><div class="comp-card-value">Use when exactly one option from a set must be selected. Always show all options.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Don'ts</div><div class="comp-card-value">Don't use for more than 6 options — use a Select dropdown instead.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Figma properties</div><div class="comp-card-value"><code>State, Label, Direction</code></div></div>
+      <div class="comp-card"><div class="comp-card-label">CSS class</div><div class="comp-card-value"><code>.radio</code></div></div>
+    </div>
+  </div>
+  <div id="statcard">
+    <h3 class="comp-name">StatCard</h3>
+    <div class="comp-grid">
+      <div class="comp-card"><div class="comp-card-label">When to use</div><div class="comp-card-value">Use on dashboards to surface key metrics. Always pair a number with a label and trend indicator.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Don'ts</div><div class="comp-card-value">Don't use more than 6 stat cards in a row.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Figma properties</div><div class="comp-card-value"><code>Value, Label, Trend</code></div></div>
+      <div class="comp-card"><div class="comp-card-label">CSS class</div><div class="comp-card-value"><code>.stat-card</code></div></div>
+    </div>
+  </div>
+  <div id="tabbar">
+    <h3 class="comp-name">TabBar</h3>
+    <div class="comp-grid">
+      <div class="comp-card"><div class="comp-card-label">When to use</div><div class="comp-card-value">Light for content sections. Dark on brand surfaces. Pill for binary choices. Counts when status numbers matter.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Don'ts</div><div class="comp-card-value">Don't use more than 6 tabs.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Figma properties</div><div class="comp-card-value"><code>Style, Theme, State, Count</code></div></div>
+      <div class="comp-card"><div class="comp-card-label">CSS class</div><div class="comp-card-value"><code>.tabs</code></div></div>
+    </div>
+  </div>
+  <div id="toggle">
+    <h3 class="comp-name">Toggle</h3>
+    <div class="comp-grid">
+      <div class="comp-card"><div class="comp-card-label">When to use</div><div class="comp-card-value">Use for immediate binary settings that take effect without a save action. Prefer over checkbox for system settings.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Don'ts</div><div class="comp-card-value">Don't use Toggle when the action needs a confirmation step.</div></div>
+      <div class="comp-card"><div class="comp-card-label">Figma properties</div><div class="comp-card-value"><code>State, Label</code></div></div>
+      <div class="comp-card"><div class="comp-card-label">CSS class</div><div class="comp-card-value"><code>.toggle</code></div></div>
+    </div>
+  </div>
+</div>
+
+  </div>
+</main>
+
+<script>
+// Highlight active nav link on scroll
+const links = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      links.forEach(l => l.style.background = '');
+      links.forEach(l => l.style.color = 'rgba(255,255,255,0.6)');
+      const active = document.querySelector('.nav-link[href="#'+e.target.id+'"]');
+      if(active){ active.style.background='#255799'; active.style.color='#fff'; }
+    }
+  });
+},{threshold:0.2});
+document.querySelectorAll('[id]').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

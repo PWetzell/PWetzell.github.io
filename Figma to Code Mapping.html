@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Figma to Code Mapping — Acme Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700;800;900&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --brand:#529604;
+  --dark:#0B2F5C;
+  --light:#E7EFF7;
+  --n900:#252525;--n800:#383838;--n700:#505050;--n500:#909090;
+  --n300:#D0D0D0;--n200:#E0E0E0;--n100:#F0F0F0;--n50:#F7F7F7;
+  --error:#FF4242;--success:#529604;--warning:#FF8505;--info:#1FA4B6;
+  --radius:8px;
+  --sidebar:260px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Mulish',sans-serif;color:var(--n800);background:var(--n50);display:flex;min-height:100vh;}
+
+/* ── Sidebar ── */
+.sidebar{
+  width:var(--sidebar);flex-shrink:0;position:fixed;top:0;left:0;height:100vh;
+  background:var(--dark);display:flex;flex-direction:column;overflow-y:auto;z-index:100;
+}
+.sidebar-header{
+  padding:32px 24px 24px;border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.doc-num{
+  font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;
+  color:rgba(255,255,255,0.4);margin-bottom:8px;
+}
+.sidebar-title{
+  font-size:16px;font-weight:800;color:#fff;line-height:1.3;
+}
+.sidebar-sub{
+  font-size:11px;color:rgba(255,255,255,0.45);margin-top:6px;font-weight:500;
+}
+.nav-section{padding:20px 16px 8px;font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);}
+.nav-link{
+  display:block;padding:9px 16px;margin:1px 8px;border-radius:6px;
+  font-size:13px;font-weight:600;color:rgba(255,255,255,0.6);
+  text-decoration:none;transition:all 0.15s;
+}
+.nav-link:hover{background:#295b37;color:#fff;}
+.sidebar-footer{
+  margin-top:auto;padding:20px 24px;border-top:1px solid rgba(255,255,255,0.08);
+  font-size:11px;color:rgba(255,255,255,0.25);font-weight:600;
+}
+.ds-logo{
+  font-size:13px;font-weight:800;color:rgba(255,255,255,0.7);
+  letter-spacing:0.02em;
+}
+
+/* ── Main content ── */
+.main{margin-left:var(--sidebar);flex:1;min-width:0;}
+
+/* ── Hero ── */
+.hero{
+  background:linear-gradient(135deg, var(--dark) 0%, var(--brand) 100%);
+  padding:64px 64px 56px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-60px;right:-40px;
+  width:400px;height:400px;border-radius:50%;
+  background:rgba(255,255,255,0.04);
+}
+.hero::after{
+  content:'';position:absolute;bottom:-80px;right:80px;
+  width:240px;height:240px;border-radius:50%;
+  background:rgba(255,255,255,0.03);
+}
+.hero-eyebrow{
+  font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(255,255,255,0.5);margin-bottom:16px;
+}
+.hero-title{
+  font-family:'DM Serif Display',serif;font-size:52px;line-height:1.1;
+  color:#fff;margin-bottom:16px;position:relative;z-index:1;
+}
+.hero-title em{font-style:italic;color:rgba(255,255,255,0.7);}
+.hero-sub{
+  font-size:15px;color:rgba(255,255,255,0.65);max-width:540px;
+  line-height:1.6;font-weight:500;position:relative;z-index:1;
+}
+.hero-meta{
+  margin-top:32px;display:flex;gap:32px;position:relative;z-index:1;
+}
+.hero-stat{border-left:2px solid rgba(255,255,255,0.2);padding-left:16px;}
+.hero-stat-num{font-size:22px;font-weight:800;color:#fff;}
+.hero-stat-label{font-size:11px;color:rgba(255,255,255,0.45);font-weight:600;margin-top:2px;}
+
+/* ── Content ── */
+.content{padding:32px 64px 56px;max-width:1000px;}
+
+/* ── Section ── */
+.section{margin-bottom:56px;}
+.section-header{
+  display:flex;align-items:center;gap:14px;margin-bottom:24px;padding-bottom:16px;
+  border-bottom:2px solid var(--n200);
+}
+.section-num{
+  width:32px;height:32px;border-radius:8px;background:var(--brand);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;color:#fff;flex-shrink:0;
+}
+.section-title{font-size:24px;font-weight:800;color:var(--n900);}
+.section-desc{font-size:14px;color:var(--n500);margin-top:4px;}
+
+h2.sh{
+  font-size:18px;font-weight:800;color:var(--n900);margin:40px 0 16px;
+  display:flex;align-items:center;gap:10px;
+}
+h2.sh::before{display:none;}
+h3.comp-name{
+  font-size:16px;font-weight:800;color:var(--n900);
+  margin:28px 0 12px;padding:12px 16px;
+  background:var(--n50);border:1px solid var(--n200);border-radius:var(--radius);
+}
+
+/* ── Tables ── */
+.doc-table{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0 24px;}
+.doc-table th{
+  text-align:left;padding:10px 14px;font-size:11px;font-weight:800;
+  letter-spacing:0.06em;text-transform:uppercase;color:var(--brand);
+  background:var(--light);border-bottom:2px solid var(--brand);
+}
+.doc-table td{
+  padding:10px 14px;border-bottom:1px solid var(--n200);
+  color:var(--n800);line-height:1.5;vertical-align:top;
+}
+.doc-table tr:nth-child(even) td{background:var(--n50);}
+.doc-table tr:hover td{background:var(--light);}
+.doc-table code{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--n100);padding:2px 6px;border-radius:4px;color:#C62828;
+}
+
+/* ── Callout boxes ── */
+.callout{
+  border-radius:var(--radius);padding:16px 20px;margin:16px 0;
+  border-left:3px solid;display:flex;gap:12px;align-items:flex-start;
+}
+.callout.info{background:#EFF8FF;border-color:#1FA4B6;}
+.callout.warning{background:#FFF8EE;border-color:#FF8505;}
+.callout.success{background:#F0F9E8;border-color:#529604;}
+.callout.danger{background:#FFF0F0;border-color:#FF4242;}
+.callout-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.callout-text{font-size:13px;line-height:1.6;color:var(--n800);}
+.callout-text strong{font-weight:800;}
+
+/* ── Component card ── */
+.comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0;}
+.comp-card{
+  background:#fff;border:1px solid var(--n200);border-radius:var(--radius);
+  padding:20px;
+}
+.comp-card-label{font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--n500);margin-bottom:6px;}
+.comp-card-value{font-size:13px;color:var(--n800);line-height:1.5;}
+.comp-card-value code{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--n100);padding:2px 6px;border-radius:4px;color:#C62828;}
+
+/* ── Bullets ── */
+.doc-list{list-style:none;margin:8px 0 16px;padding:0;}
+.doc-list li{
+  padding:6px 0 6px 20px;position:relative;font-size:13px;
+  color:var(--n800);line-height:1.5;border-bottom:1px solid var(--n100);
+}
+.doc-list li:last-child{border-bottom:none;}
+.doc-list li::before{
+  content:'→';position:absolute;left:0;color:var(--brand);font-weight:800;font-size:12px;
+}
+
+/* ── Token pill ── */
+.token-name{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  background:var(--n100);padding:3px 8px;border-radius:4px;color:var(--dark);font-weight:500;
+}
+.color-swatch{
+  display:inline-block;width:14px;height:14px;border-radius:3px;
+  vertical-align:middle;margin-right:6px;border:1px solid rgba(0,0,0,0.1);
+}
+
+/* ── Check items ── */
+.check-list{list-style:none;margin:8px 0 16px;}
+.check-list li{
+  padding:7px 0 7px 28px;position:relative;font-size:13px;
+  color:var(--n800);line-height:1.5;border-bottom:1px solid var(--n100);
+}
+.check-list li:last-child{border-bottom:none;}
+.check-list li::before{
+  content:'□';position:absolute;left:0;color:var(--n300);font-size:16px;line-height:1;top:8px;
+}
+
+/* ── Icon grid ── */
+.icon-table{width:100%;border-collapse:collapse;font-size:13px;}
+.icon-table th{text-align:left;padding:8px 12px;font-size:11px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--brand);background:var(--light);border-bottom:2px solid var(--brand);}
+.icon-table td{padding:8px 12px;border-bottom:1px solid var(--n100);color:var(--n800);vertical-align:middle;}
+.icon-table tr:nth-child(even) td{background:var(--n50);}
+.icon-name{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--dark);}
+.icon-component{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--n500);}
+
+/* ── Contrast badge ── */
+.pass{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:800;background:#EDF7E0;color:#336600;}
+.warn{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:800;background:#FFF8EE;color:#995500;}
+
+/* ── Size pill ── */
+.size-pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;background:var(--light);color:var(--brand);}
+
+/* ── Print ── */
+@media print{
+  .sidebar{display:none;}
+  .main{margin-left:0;}
+  .hero{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .doc-table th{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .section{page-break-inside:avoid;}
+}
+
+/* ── Accent variants ── */
+.accent-bar{display:none;}
+
+/* divider */
+.divider{height:1px;background:var(--n200);margin:32px 0;}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D0D0D0; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #B0B0B0; }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <a href="#" style="display:flex;flex-direction:column;align-items:center;padding:20px 20px 14px;border-bottom:1px solid rgba(255,255,255,0.08);text-decoration:none;">
+    <svg viewBox="0 0 410.41 145.93" width="160" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="405.05 17.81 13.93 32.05 30.85 124.65 393.14 130.82 405.05 17.81" fill="rgba(0,0,0,0.4)"/>
+      <polygon points="398.13 9.93 7 24.18 23.92 116.77 386.22 122.94 398.13 9.93" fill="#8abae4"/>
+      <g>
+        <path fill="#0B2F5C" d="M83.11,89.21c-3,2.45-13.12,10.92-16.76,10.92-4.43,0-13.6-10.76-13.91-19.23-.63-20.37,40.47-41.24,58.81-41.73,7.27-.16,10.28,5.87,10.28,7.82s-4.11,3.59-5.53,4.07c3,1.3,4.58,3.1,4.58,6.68,0,5.22-13.75,16.63-13.75,24.29,0,2.77,2.37,3.91,4.9,3.91,6.64,0,15.65-8.31,22.45-13.04l1.26,6.03c-6.8,7.99-27.98,25.43-35.73,25.43-5.22,0-7.59-3.91-7.59-8.64,0-5.22,3.79-13.85,5.85-18.26l-.32-.33-14.54,12.06ZM63.98,84.97c.16.81.79,3.75,3.16,3.26,3.16-.65,8.06-.16,39.36-32.76l-.32-.33c-37.62,11.9-42.21,21.84-42.21,29.83Z"/>
+        <path fill="#0B2F5C" d="M151.72,69.65c-3.48,2.61-6.32,5.05-6.32,9.62,0,3.75,3.79,8.8,12.01,8.8,12.01,0,25.77-11.41,34.94-18.74l1.9,6.36c-9.64,10.59-27.35,26.73-42.37,26.73-12.17,0-18.02-11.74-18.02-23.8,0-13.69,4.74-18.74,15.02-26.73,7.11-5.54,22.29-14.34,31.14-14.34,4.9,0,7.11,2.61,7.11,7.5,0,8.96-12.49,21.51-16.76,21.51-3.64,0-5.22-4.07-5.37-7.17l-13.28,10.27Z"/>
+        <path fill="#0B2F5C" d="M244.52,90.51c-3.64,3.59-9.33,10.27-14.7,10.27-3.79,0-6.8-2.93-6.96-6.85-.16-4.73,3.64-12.22,13.91-28.36.32-.33.95-1.63.95-2.12,0-.65-.47-1.14-1.11-1.14-1.58,0-5.06,3.91-6.17,5.05-8.22,8.96-17.07,18.74-24.5,28.2-1.74,2.12-3.95,4.56-6.8,4.56-7.59,0-9.8-12.71-9.8-18.58.16-15.97,16.92-37.81,26.4-36.51,2.37.33,7.11.33,7.11,3.75s-4.43,8.15-6.32,10.43c-2.85,3.42-6.32,6.36-8.69,9.94-1.74,2.44-4.58,5.05-4.58,8.48,0,.33.47,1.47,1.11,1.47.79,0,2.69-2.12,3.16-2.61,7.75-8.31,35.88-37.33,46.16-37.33,4.27,0,6.48,3.26,6.48,7.5,0,7.17-11.22,20.37-14.7,26.73l.32.33,35.1-28.52c1.58-1.3,5.53-4.56,7.43-4.56,1.26,0,2.85,3.91,3.32,4.56,1.11,1.79,2.85,4.24,2.85,6.52,0,2.77-3.16,6.36-4.9,8.31-12.33,14.02-13.28,16.63-13.44,20.37-.16,1.96,1.9,4.56,3.79,4.08,3.32-.81,5.06-.81,24.5-14.51l.95,7.66c-7.43,6.03-30.19,25.26-39.05,25.26-4.74,0-8.06-4.73-8.06-9.45,0-8.15,7.75-19.72,11.7-26.41l-.32-.33-25.14,23.8Z"/>
+        <path fill="#0B2F5C" d="M361.98,76c-9.64,11.57-27.03,26.89-42.68,26.89-11.54,0-16.92-10.59-17.23-21.35-.63-21.35,22.29-43.19,42.84-43.03,5.06,0,11.38,1.3,11.38,7.82,0,7.99-7.75,20.05-38.1,30.32l-.32,3.59c-.47,6.19,4.74,8.31,9.8,8.31,11.22,0,24.5-11.9,32.88-18.74l1.42,6.19ZM342.37,49.76c0-1.14-.79-2.12-1.9-1.79-7.9,2.12-17.07,9.94-21.34,20.7,13.91-4.89,23.4-16.14,23.24-18.91Z"/>
+      </g>
+    </svg>
+  </a>
+  <div class="nav-section" style="margin-top:20px;">Contents</div>
+  <a href="#conventions" class="nav-link">Conventions</a><a href="#mappings" class="nav-link">All Mappings</a>
+  <div class="sidebar-footer">
+    <div class="ds-logo">Acme DS · v1.0</div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="hero">
+    <div class="hero-eyebrow">Acme Design System</div>
+    <h1 class="hero-title">Figma to Code <em>Mapping</em></h1>
+    <p class="hero-sub">Every Figma component variant mapped to its CSS class and HTML element. The bridge between design and engineering.</p>
+  </div>
+
+  <div class="content">
+    
+<div id="conventions" class="section">
+  <div class="accent-bar"></div>
+  <p style="font-size:15px;color:var(--n700);line-height:1.7;margin-bottom:24px;">Use this as the source of truth when translating designs to code. Every Figma variant maps to a CSS class and HTML element.</p>
+  <h2 class="sh">Naming Conventions</h2>
+  <ul class="doc-list">
+    <li>Figma uses <strong>PascalCase</strong> for property names: <code>Type=Primary</code>, <code>State=Hover</code>, <code>Size=MD</code></li>
+    <li>CSS classes use <strong>kebab-case</strong>: <code>.btn-primary</code>, <code>.btn-md</code></li>
+    <li>State modifiers use <strong>BEM-style</strong>: <code>.is-active</code>, <code>.is-error</code>, <code>:hover</code>, <code>:focus</code></li>
+    <li>Semantic HTML first — use the right element before adding ARIA</li>
+  </ul>
+  <div class="callout warning"><div class="callout-icon">⚠</div><div class="callout-text"><strong>Hover/focus states</strong> are never separate HTML elements — always CSS pseudo-classes. The Figma variants exist for visual documentation only.</div></div>
+</div>
+<div id="mappings" class="section">
+  <h2 class="sh">Component Mappings</h2>
+  <table class="doc-table">
+    <thead><tr><th>Component</th><th>Figma Variant</th><th>CSS Class</th><th>HTML Element</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Button</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Type=Primary, State=Default, Size=MD</td>
+        <td><code>.btn.btn-md.btn-primary</code></td>
+        <td><code>button.btn.btn-md.btn-primary</code></td>
+      </tr><tr>
+        <td><strong>Button</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Type=Secondary, State=Default, Size=MD</td>
+        <td><code>.btn.btn-md.btn-secondary</code></td>
+        <td><code>button.btn.btn-md.btn-secondary</code></td>
+      </tr><tr>
+        <td><strong>Button</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Type=Ghost, State=Default, Size=SM</td>
+        <td><code>.btn.btn-sm.btn-ghost</code></td>
+        <td><code>button.btn.btn-sm.btn-ghost</code></td>
+      </tr><tr>
+        <td><strong>Button</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Type=Danger, State=Default, Size=MD</td>
+        <td><code>.btn.btn-md.btn-danger</code></td>
+        <td><code>button.btn.btn-md.btn-danger</code></td>
+      </tr><tr>
+        <td><strong>Button</strong></td>
+        <td style="font-size:12px;color:var(--n700)">State=Hover</td>
+        <td><code>—  (use :hover pseudo-class)</code></td>
+        <td><code>—</code></td>
+      </tr><tr>
+        <td><strong>Button</strong></td>
+        <td style="font-size:12px;color:var(--n700)">State=Focus</td>
+        <td><code>:focus-visible + 3px ring</code></td>
+        <td><code>—</code></td>
+      </tr><tr>
+        <td><strong>Button</strong></td>
+        <td style="font-size:12px;color:var(--n700)">State=Disabled</td>
+        <td><code>[disabled] or aria-disabled</code></td>
+        <td><code>—</code></td>
+      </tr><tr>
+        <td><strong>Input</strong></td>
+        <td style="font-size:12px;color:var(--n700)">State=Default</td>
+        <td><code>.input</code></td>
+        <td><code>input.input</code></td>
+      </tr><tr>
+        <td><strong>Input</strong></td>
+        <td style="font-size:12px;color:var(--n700)">State=Error</td>
+        <td><code>.input.is-error + aria-invalid</code></td>
+        <td><code>input.input.is-error</code></td>
+      </tr><tr>
+        <td><strong>Input</strong></td>
+        <td style="font-size:12px;color:var(--n700)">State=Focus</td>
+        <td><code>.input:focus</code></td>
+        <td><code>—</code></td>
+      </tr><tr>
+        <td><strong>Input</strong></td>
+        <td style="font-size:12px;color:var(--n700)">State=Disabled</td>
+        <td><code>.input[disabled]</code></td>
+        <td><code>—</code></td>
+      </tr><tr>
+        <td><strong>Badge</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Color=Brand, Style=Pill</td>
+        <td><code>.badge.badge-brand.badge-pill</code></td>
+        <td><code>span.badge.badge-brand.badge-pill</code></td>
+      </tr><tr>
+        <td><strong>Badge</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Color=Error, Style=Default</td>
+        <td><code>.badge.badge-error</code></td>
+        <td><code>span.badge.badge-error</code></td>
+      </tr><tr>
+        <td><strong>Badge</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Color=Success</td>
+        <td><code>.badge.badge-success</code></td>
+        <td><code>span.badge.badge-success</code></td>
+      </tr><tr>
+        <td><strong>Alert</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Type=Warning</td>
+        <td><code>.alert.alert-warning + role="alert"</code></td>
+        <td><code>div.alert.alert-warning</code></td>
+      </tr><tr>
+        <td><strong>Alert</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Type=Success</td>
+        <td><code>.alert.alert-success + role="status"</code></td>
+        <td><code>div.alert.alert-success</code></td>
+      </tr><tr>
+        <td><strong>Alert</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Type=Error</td>
+        <td><code>.alert.alert-error + role="alert"</code></td>
+        <td><code>div.alert.alert-error</code></td>
+      </tr><tr>
+        <td><strong>Modal</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Type=Confirmation</td>
+        <td><code>.modal + role="dialog"</code></td>
+        <td><code>div.modal</code></td>
+      </tr><tr>
+        <td><strong>Modal</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Type=Destructive</td>
+        <td><code>.modal + .btn-danger footer</code></td>
+        <td><code>div.modal</code></td>
+      </tr><tr>
+        <td><strong>Dropdown</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Style=Simple, State=Open</td>
+        <td><code>.dropdown.is-open</code></td>
+        <td><code>div.dropdown</code></td>
+      </tr><tr>
+        <td><strong>TabBar</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Theme=Light, State=Active</td>
+        <td><code>.tabs .tab.is-active</code></td>
+        <td><code>—</code></td>
+      </tr><tr>
+        <td><strong>TabBar</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Theme=Dark</td>
+        <td><code>.tabs.tabs-dark</code></td>
+        <td><code>—</code></td>
+      </tr><tr>
+        <td><strong>TabBar</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Style=Pill</td>
+        <td><code>.tabs.tabs-pill</code></td>
+        <td><code>—</code></td>
+      </tr><tr>
+        <td><strong>Navbar</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Theme=Light</td>
+        <td><code>.navbar</code></td>
+        <td><code>nav.navbar</code></td>
+      </tr><tr>
+        <td><strong>Navbar</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Theme=Dark</td>
+        <td><code>.navbar.navbar-dark</code></td>
+        <td><code>nav.navbar.navbar-dark</code></td>
+      </tr><tr>
+        <td><strong>Avatar</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Size=MD, Shade=Dark, Color=Brand</td>
+        <td><code>.avatar.avatar-md.avatar-brand-dark</code></td>
+        <td><code>span.avatar</code></td>
+      </tr><tr>
+        <td><strong>Checkbox</strong></td>
+        <td style="font-size:12px;color:var(--n700)">State=Checked</td>
+        <td><code>.checkbox:checked</code></td>
+        <td><code>input[type=checkbox]</code></td>
+      </tr><tr>
+        <td><strong>Radio</strong></td>
+        <td style="font-size:12px;color:var(--n700)">State=Selected</td>
+        <td><code>.radio:checked</code></td>
+        <td><code>input[type=radio]</code></td>
+      </tr><tr>
+        <td><strong>Toggle</strong></td>
+        <td style="font-size:12px;color:var(--n700)">State=On</td>
+        <td><code>.toggle.is-on + role="switch" aria-checked="true"</code></td>
+        <td><code>input.toggle</code></td>
+      </tr><tr>
+        <td><strong>Card</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Default</td>
+        <td><code>.card</code></td>
+        <td><code>div.card</code></td>
+      </tr><tr>
+        <td><strong>StatCard</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Trend Up</td>
+        <td><code>.stat-card .trend-up</code></td>
+        <td><code>div.stat-card</code></td>
+      </tr><tr>
+        <td><strong>DataTable</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Density=Comfortable</td>
+        <td><code>.data-table.density-comfortable</code></td>
+        <td><code>table.data-table</code></td>
+      </tr><tr>
+        <td><strong>FormLayout</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Two Column</td>
+        <td><code>.form-layout.cols-2</code></td>
+        <td><code>div.form-layout.cols-2</code></td>
+      </tr><tr>
+        <td><strong>IconButton</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Style=Ghost, Size=MD</td>
+        <td><code>.btn.btn-icon.btn-ghost.btn-md</code></td>
+        <td><code>button.btn.btn-icon</code></td>
+      </tr><tr>
+        <td><strong>CountBadge</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Shade=Dark, Color=Brand</td>
+        <td><code>.badge.badge-brand (pill)</code></td>
+        <td><code>span.badge</code></td>
+      </tr><tr>
+        <td><strong>Breadcrumb</strong></td>
+        <td style="font-size:12px;color:var(--n700)">Separator=Slash</td>
+        <td><code>.breadcrumb</code></td>
+        <td><code>nav.breadcrumb</code></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+  </div>
+</main>
+
+<script>
+// Highlight active nav link on scroll
+const links = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      links.forEach(l => l.style.background = '');
+      links.forEach(l => l.style.color = 'rgba(255,255,255,0.6)');
+      const active = document.querySelector('.nav-link[href="#'+e.target.id+'"]');
+      if(active){ active.style.background='#295b37'; active.style.color='#fff'; }
+    }
+  });
+},{threshold:0.2});
+document.querySelectorAll('[id]').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
