@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acme Design System Case Study — Paul Wentzell</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;color:#1a1a1a;background:#fafaf8}
+.hero{background:#0B2F5C;padding:80px 0 60px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(25,85,166,0.4) 0%,transparent 70%);pointer-events:none}
+.hero-inner{max-width:1100px;margin:0 auto;padding:0 40px;position:relative;z-index:1}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#A8C4E4;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.eyebrow::before{content:'';display:block;width:28px;height:1px;background:#A8C4E4}
+.hook{font-family:'DM Serif Display',serif;font-size:clamp(26px,4vw,44px);line-height:1.12;color:#fff;margin-bottom:28px;max-width:100%}
+.hook em{font-style:italic;color:#A8C4E4}
+.meta-row{display:flex;gap:0;flex-wrap:nowrap;padding-top:24px;border-top:1px solid rgba(168,196,228,.2);justify-content:space-between;align-items:flex-start}
+.meta-item{flex-shrink:0}
+.meta-item label{display:block;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#A8C4E4;margin-bottom:4px;white-space:nowrap}
+.meta-item span{font-size:11px;font-weight:500;color:#fff;display:block;white-space:nowrap}
+.cs-topnav{background:#fff;border-bottom:1px solid #E0E0E0;position:sticky;top:0;z-index:100;padding-bottom:8px}
+.deliverable-link{color:inherit;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .15s}
+.deliverable-link:hover{color:#1955A6}
+.deliverable-link:hover .link-icon{opacity:1}
+.link-icon{opacity:0;transition:opacity .15s;font-size:10px}
+.cs-context-bar{height:0;overflow:hidden;transition:height .25s ease;background:#0B2F5C;border-bottom:none}
+.cs-context-bar.visible{height:36px}
+.cs-context-bar-inner{max-width:1100px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:36px}
+.cs-context-title{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#fff;font-weight:600}
+.cs-context-meta{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#A8C4E4}
+.cs-topnav-wrap{position:relative;max-width:1100px;margin:0 auto}
+.cs-topnav-inner{padding:0 16px;display:flex;gap:0;justify-content:center;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;scroll-behavior:smooth}
+.cs-topnav-inner::-webkit-scrollbar{display:none}
+.cs-nav-arrow{display:none;position:absolute;top:0;bottom:0;width:44px;align-items:center;justify-content:center;background:#fff;border:none;cursor:pointer;color:#1955A6;font-size:18px;font-weight:700;z-index:10;transition:opacity .2s}
+.cs-nav-arrow.left{left:0;background:linear-gradient(to right,#fff 60%,transparent)}
+.cs-nav-arrow.right{right:0;background:linear-gradient(to left,#fff 60%,transparent)}
+.cs-nav-arrow.hidden{opacity:0;pointer-events:none}
+.layout{max-width:1100px;margin:0 auto;padding:0 40px}
+.nav-link{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:#707070;padding:14px 10px 6px;border-bottom:2px solid transparent;text-decoration:none;transition:color .15s,border-color .15s;white-space:nowrap}
+.nav-link:hover{color:#1955A6;border-color:#1955A6}
+.nav-link.active{color:#1955A6;border-color:#1955A6;font-weight:600}
+.main{padding-bottom:80px;padding-top:48px}
+.section{padding:56px 0 0;scroll-margin-top:60px}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#1955A6;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;max-width:32px;height:1px;background:#1955A6}
+.section h2{font-family:'DM Serif Display',serif;font-size:clamp(22px,3vw,32px);line-height:1.2;color:#0B2F5C;margin-bottom:16px;font-weight:400}
+.section p{font-size:15px;line-height:1.75;color:#3a3a3a;margin-bottom:16px}
+.section p strong{color:#1a1a1a;font-weight:600}
+.pullquote{border-left:3px solid #1955A6;padding:16px 0 16px 24px;margin:32px 0}
+.pullquote p{font-family:'DM Serif Display',serif;font-size:clamp(16px,2vw,20px);line-height:1.45;color:#0B2F5C;font-style:italic;margin:0}
+.pullquote.green{border-color:#529604}
+.pullquote.green p{color:#244A02}
+.tension{background:#0B2F5C;border-radius:10px;padding:32px 40px;margin:40px 0}
+.tension-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#A8C4E4;margin-bottom:12px}
+.tension h3{font-family:'DM Serif Display',serif;font-size:clamp(18px,2.5vw,24px);color:#fff;line-height:1.3;font-weight:400;margin-bottom:12px}
+.tension p{font-size:14px;line-height:1.7;color:#A8C4E4;margin:0}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:32px 0}
+.card{border:1px solid #E0E0E0;border-radius:10px;padding:24px;background:#fff}
+.card.accent{border-color:#A8C4E4;background:#E7EFF7}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#1955A6;margin-bottom:10px}
+.card h4{font-family:'DM Serif Display',serif;font-size:18px;color:#0B2F5C;margin-bottom:8px;font-weight:400}
+.card p{font-size:13px;line-height:1.65;color:#505050;margin:0}
+.arch{background:#fff;border:1px solid #E0E0E0;border-radius:10px;padding:32px;margin:32px 0}
+.arch-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#909090;margin-bottom:24px;text-align:center}
+.arch-flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0}
+.arch-node{text-align:center;padding:14px 18px;background:#F7F7F7;border:1px solid #E0E0E0;border-radius:8px;min-width:130px}
+.arch-node.source{background:#E7EFF7;border-color:#A8C4E4}
+.arch-node.output{background:#E6F3C3;border-color:#C4E17F}
+.arch-node.dev{background:#E7EFF7;border-color:#A8C4E4}
+.arch-node.feedback{background:#F7D7D7;border-color:#F2A7A7}
+.arch-node-label{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#909090;margin-bottom:4px}
+.arch-node-name{font-size:12px;font-weight:600;color:#252525}
+.arch-node-desc{font-size:10px;color:#707070;margin-top:3px}
+.arch-arrow{font-size:16px;color:#B0B0B0;padding:0 6px;flex-shrink:0}
+.arch-down{display:flex;justify-content:center;margin:10px 0;font-size:16px;color:#B0B0B0}
+.arch-bottom{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+.arch-stacks{margin-top:20px;padding:16px 20px;background:#F7F7F7;border-radius:8px;border:1px solid #E0E0E0}
+.arch-stacks-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#909090;margin-bottom:10px}
+.arch-stacks-pills{display:flex;gap:10px;flex-wrap:wrap}
+.arch-stack-pill{font-family:'JetBrains Mono',monospace;font-size:10px;background:#E7EFF7;border:1px solid #A8C4E4;color:#1955A6;padding:4px 10px;border-radius:4px}
+.learnings{margin:24px 0;display:flex;flex-direction:column;gap:12px}
+.learning-item{display:flex;gap:14px;padding:16px 20px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;align-items:flex-start}
+.learning-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:#1955A6;font-weight:500;flex-shrink:0;padding-top:2px;min-width:22px}
+.learning-feat{font-size:12px;font-weight:600;color:#0B2F5C;flex-shrink:0;padding-top:1px}
+.learning-text{font-size:14px;line-height:1.65;color:#3a3a3a}
+.learning-text strong{color:#1a1a1a;font-weight:600}
+.inventory{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;margin:24px 0}
+.inv-item{background:#fff;border:1px solid #E0E0E0;border-radius:7px;padding:12px 14px;display:flex;align-items:center;gap:8px}
+.dot{width:5px;height:5px;border-radius:50%;background:#529604;flex-shrink:0}
+.inv-name{font-size:12px;font-weight:500;color:#252525}
+.inv-count{font-family:'JetBrains Mono',monospace;font-size:9px;color:#909090;margin-left:auto}
+.reflection{background:#F7F7F7;border-radius:10px;padding:28px 32px;margin:40px 0;display:flex;gap:16px;align-items:flex-start}
+.reflection-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.reflection-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#909090;margin-bottom:8px}
+.reflection p{font-size:14px;line-height:1.7;color:#3a3a3a;margin:0}
+.divider{height:1px;background:#E0E0E0;margin:56px 0 0}
+.footer{padding:36px 0 64px;display:flex;flex-wrap:wrap;gap:8px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#1955A6;background:#E7EFF7;border:1px solid #A8C4E4;padding:4px 9px;border-radius:4px}
+.gallery-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.gallery-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.gallery-placeholder{background:#E8E8E8;border-radius:8px;overflow:hidden;border:1px solid #E0E0E0}
+.gallery-placeholder-inner{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;padding:40px 16px}
+.gallery-placeholder-icon{width:32px;height:32px;background:#D0D0D0;border-radius:6px}
+.gallery-placeholder-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:#909090;letter-spacing:.08em;text-transform:uppercase;text-align:center}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:#F0F0F0;padding:2px 6px;border-radius:3px}
+
+/* ── TABLET 768–1024px ── */
+@media (max-width:1024px){
+  .hero-inner,.layout,.cs-topnav-inner{padding:0 32px}
+  .hook{font-size:clamp(24px,3.5vw,36px)}
+  .meta-item span{font-size:10px}
+  .meta-item label{font-size:7px}
+  .section h2{font-size:clamp(20px,2.5vw,28px)}
+  .section p{font-size:14px}
+  .two-col{grid-template-columns:1fr 1fr;gap:12px}
+  .arch-flow{gap:4px}
+  .arch-node{min-width:110px;padding:12px 12px}
+  .inventory{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+  .nav-link{font-size:8px;padding:14px 8px}
+}
+
+/* ── MOBILE 480–767px ── */
+@media (max-width:767px){
+  .hero{padding:48px 0 40px}
+  .hero-inner,.layout{padding:0 20px}
+  .cs-topnav-inner{padding:0;justify-content:flex-start}
+  .cs-nav-arrow{display:flex}
+  .eyebrow{font-size:9px}
+  .hook{font-size:clamp(22px,6vw,32px);margin-bottom:20px}
+  .meta-row{flex-wrap:wrap;gap:20px;justify-content:flex-start}
+  .meta-item{flex:1 1 40%}
+  .meta-item span{white-space:normal;font-size:11px}
+  .meta-item label{font-size:8px}
+  .section{padding:40px 0 0}
+  .section h2{font-size:22px}
+  .section p{font-size:14px}
+  .two-col{grid-template-columns:1fr;gap:12px}
+  .arch-flow{flex-direction:column;align-items:center;gap:4px}
+  .arch-arrow{transform:rotate(90deg)}
+  .arch-bottom{flex-direction:column;align-items:center}
+  .arch-down{margin:4px 0}
+  .learnings .learning-item{flex-direction:column;gap:6px}
+  .learning-feat{min-width:unset !important}
+  .inventory{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+  .reflection{flex-direction:column;gap:10px}
+  .gallery-grid-2{grid-template-columns:1fr}
+  .gallery-grid-3{grid-template-columns:1fr 1fr}
+  .nav-link{font-size:8px;padding:12px 8px;letter-spacing:.06em}
+  .cs-topnav{overflow-x:auto}
+  .cs-nav-arrow{display:flex}
+  .footer{gap:6px}
+  .tag{font-size:8px}
+}
+
+/* ── PHONE <480px ── */
+@media (max-width:479px){
+  .hero{padding:36px 0 32px}
+  .hero-inner,.layout{padding:0 16px}
+  .hook{font-size:clamp(20px,7vw,28px)}
+  .meta-row{gap:16px}
+  .meta-item{flex:1 1 100%}
+  .section h2{font-size:20px}
+  .section p{font-size:13px}
+  .pullquote p{font-size:16px}
+  .tension{padding:24px 20px}
+  .tension h3{font-size:18px}
+  .card{padding:18px}
+  .arch{padding:20px}
+  .arch-node{min-width:90px;padding:10px}
+  .arch-node-name{font-size:11px}
+  .inventory{grid-template-columns:1fr 1fr}
+  .gallery-grid-2,.gallery-grid-3{grid-template-columns:1fr}
+  .nav-link{font-size:7px;padding:12px 6px}
+  .cs-topnav-inner{padding:0 4px}
+  .reflection{padding:20px}
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D0D0D0; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #B0B0B0; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div style="margin-bottom:18px"><svg viewBox="0 0 410.41 145.93" width="110" xmlns="http://www.w3.org/2000/svg"><polygon points="405.05 17.81 13.93 32.05 30.85 124.65 393.14 130.82 405.05 17.81" fill="rgba(0,0,0,0.35)"/><polygon points="398.13 9.93 7 24.18 23.92 116.77 386.22 122.94 398.13 9.93" fill="#8abae4"/><path fill="#ffffff" d="M83.11,89.21c-3,2.45-13.12,10.92-16.76,10.92-4.43,0-13.6-10.76-13.91-19.23-.63-20.37,40.47-41.24,58.81-41.73,7.27-.16,10.28,5.87,10.28,7.82s-4.11,3.59-5.53,4.07c3,1.3,4.58,3.1,4.58,6.68,0,5.22-13.75,16.63-13.75,24.29,0,2.77,2.37,3.91,4.9,3.91,6.64,0,15.65-8.31,22.45-13.04l1.26,6.03c-6.8,7.99-27.98,25.43-35.73,25.43-5.22,0-7.59-3.91-7.59-8.64,0-5.22,3.79-13.85,5.85-18.26l-.32-.33-14.54,12.06ZM63.98,84.97c.16.81.79,3.75,3.16,3.26,3.16-.65,8.06-.16,39.36-32.76l-.32-.33c-37.62,11.9-42.21,21.84-42.21,29.83Z"/><path fill="#ffffff" d="M151.72,69.65c-3.48,2.61-6.32,5.05-6.32,9.62,0,3.75,3.79,8.8,12.01,8.8,12.01,0,25.77-11.41,34.94-18.74l1.9,6.36c-9.64,10.59-27.35,26.73-42.37,26.73-12.17,0-18.02-11.74-18.02-23.8,0-13.69,4.74-18.74,15.02-26.73,7.11-5.54,22.29-14.34,31.14-14.34,4.9,0,7.11,2.61,7.11,7.5,0,8.96-12.49,21.51-16.76,21.51-3.64,0-5.22-4.07-5.37-7.17l-13.28,10.27Z"/><path fill="#ffffff" d="M244.52,90.51c-3.64,3.59-9.33,10.27-14.7,10.27-3.79,0-6.8-2.93-6.96-6.85-.16-4.73,3.64-12.22,13.91-28.36.32-.33.95-1.63.95-2.12,0-.65-.47-1.14-1.11-1.14-1.58,0-5.06,3.91-6.17,5.05-8.22,8.96-17.07,18.74-24.5,28.2-1.74,2.12-3.95,4.56-6.8,4.56-7.59,0-9.8-12.71-9.8-18.58.16-15.97,16.92-37.81,26.4-36.51,2.37.33,7.11.33,7.11,3.75s-4.43,8.15-6.32,10.43c-2.85,3.42-6.32,6.36-8.69,9.94-1.74,2.44-4.58,5.05-4.58,8.48,0,.33.47,1.47,1.11,1.47.79,0,2.69-2.12,3.16-2.61,7.75-8.31,35.88-37.33,46.16-37.33,4.27,0,6.48,3.26,6.48,7.5,0,7.17-11.22,20.37-14.7,26.73l.32.33,35.1-28.52c1.58-1.3,5.53-4.56,7.43-4.56,1.26,0,2.85,3.91,3.32,4.56,1.11,1.79,2.85,4.24,2.85,6.52,0,2.77-3.16,6.36-4.9,8.31-12.33,14.02-13.28,16.63-13.44,20.37-.16,1.96,1.9,4.56,3.79,4.08,3.32-.81,5.06-.81,24.5-14.51l.95,7.66c-7.43,6.03-30.19,25.26-39.05,25.26-4.74,0-8.06-4.73-8.06-9.45,0-8.15,7.75-19.72,11.7-26.41l-.32-.33-25.14,23.8Z"/><path fill="#ffffff" d="M361.98,76c-9.64,11.57-27.03,26.89-42.68,26.89-11.54,0-16.92-10.59-17.23-21.35-.63-21.35,22.29-43.19,42.84-43.03,5.06,0,11.38,1.3,11.38,7.82,0,7.99-7.75,20.05-38.1,30.32l-.32,3.59c-.47,6.19,4.74,8.31,9.8,8.31,11.22,0,24.5-11.9,32.88-18.74l1.42,6.19ZM342.37,49.76c0-1.14-.79-2.12-1.9-1.79-7.9,2.12-17.07,9.94-21.34,20.7,13.91-4.89,23.4-16.14,23.24-18.91Z"/></svg></div>
+    <div class="eyebrow">Acme Design System — Personal Project</div>
+    <h1 class="hook">New tools were changing how design systems get built. <em>I wanted to understand them from the inside.</em></h1>
+    <div class="meta-row">
+      <div class="meta-item"><label>Type</label><span>Personal Learning Project</span></div>
+      <div class="meta-item"><label>Domain</label><span>Enterprise CRM / Data-Heavy UI</span></div>
+      <div class="meta-item"><label>Duration</label><span>Substantial — multiple phases</span></div>
+      <div class="meta-item"><label>Tools</label><span>Figma API, Claude Code, MCP, CSS</span></div>
+      <div class="meta-item"><label>System</label><span>Acme Design System</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- HORIZONTAL NAV -->
+<div class="cs-topnav">
+  <div class="cs-context-bar" id="cs-context-bar">
+    <div class="cs-context-bar-inner">
+      <div style="display:flex;align-items:center;gap:12px"><svg viewBox="0 0 410.41 145.93" width="52" style="flex-shrink:0" xmlns="http://www.w3.org/2000/svg"><polygon points="405.05 17.81 13.93 32.05 30.85 124.65 393.14 130.82 405.05 17.81" fill="rgba(0,0,0,0.35)"/><polygon points="398.13 9.93 7 24.18 23.92 116.77 386.22 122.94 398.13 9.93" fill="#8abae4"/><path fill="#ffffff" d="M83.11,89.21c-3,2.45-13.12,10.92-16.76,10.92-4.43,0-13.6-10.76-13.91-19.23-.63-20.37,40.47-41.24,58.81-41.73,7.27-.16,10.28,5.87,10.28,7.82s-4.11,3.59-5.53,4.07c3,1.3,4.58,3.1,4.58,6.68,0,5.22-13.75,16.63-13.75,24.29,0,2.77,2.37,3.91,4.9,3.91,6.64,0,15.65-8.31,22.45-13.04l1.26,6.03c-6.8,7.99-27.98,25.43-35.73,25.43-5.22,0-7.59-3.91-7.59-8.64,0-5.22,3.79-13.85,5.85-18.26l-.32-.33-14.54,12.06ZM63.98,84.97c.16.81.79,3.75,3.16,3.26,3.16-.65,8.06-.16,39.36-32.76l-.32-.33c-37.62,11.9-42.21,21.84-42.21,29.83Z"/><path fill="#ffffff" d="M151.72,69.65c-3.48,2.61-6.32,5.05-6.32,9.62,0,3.75,3.79,8.8,12.01,8.8,12.01,0,25.77-11.41,34.94-18.74l1.9,6.36c-9.64,10.59-27.35,26.73-42.37,26.73-12.17,0-18.02-11.74-18.02-23.8,0-13.69,4.74-18.74,15.02-26.73,7.11-5.54,22.29-14.34,31.14-14.34,4.9,0,7.11,2.61,7.11,7.5,0,8.96-12.49,21.51-16.76,21.51-3.64,0-5.22-4.07-5.37-7.17l-13.28,10.27Z"/><path fill="#ffffff" d="M244.52,90.51c-3.64,3.59-9.33,10.27-14.7,10.27-3.79,0-6.8-2.93-6.96-6.85-.16-4.73,3.64-12.22,13.91-28.36.32-.33.95-1.63.95-2.12,0-.65-.47-1.14-1.11-1.14-1.58,0-5.06,3.91-6.17,5.05-8.22,8.96-17.07,18.74-24.5,28.2-1.74,2.12-3.95,4.56-6.8,4.56-7.59,0-9.8-12.71-9.8-18.58.16-15.97,16.92-37.81,26.4-36.51,2.37.33,7.11.33,7.11,3.75s-4.43,8.15-6.32,10.43c-2.85,3.42-6.32,6.36-8.69,9.94-1.74,2.44-4.58,5.05-4.58,8.48,0,.33.47,1.47,1.11,1.47.79,0,2.69-2.12,3.16-2.61,7.75-8.31,35.88-37.33,46.16-37.33,4.27,0,6.48,3.26,6.48,7.5,0,7.17-11.22,20.37-14.7,26.73l.32.33,35.1-28.52c1.58-1.3,5.53-4.56,7.43-4.56,1.26,0,2.85,3.91,3.32,4.56,1.11,1.79,2.85,4.24,2.85,6.52,0,2.77-3.16,6.36-4.9,8.31-12.33,14.02-13.28,16.63-13.44,20.37-.16,1.96,1.9,4.56,3.79,4.08,3.32-.81,5.06-.81,24.5-14.51l.95,7.66c-7.43,6.03-30.19,25.26-39.05,25.26-4.74,0-8.06-4.73-8.06-9.45,0-8.15,7.75-19.72,11.7-26.41l-.32-.33-25.14,23.8Z"/><path fill="#ffffff" d="M361.98,76c-9.64,11.57-27.03,26.89-42.68,26.89-11.54,0-16.92-10.59-17.23-21.35-.63-21.35,22.29-43.19,42.84-43.03,5.06,0,11.38,1.3,11.38,7.82,0,7.99-7.75,20.05-38.1,30.32l-.32,3.59c-.47,6.19,4.74,8.31,9.8,8.31,11.22,0,24.5-11.9,32.88-18.74l1.42,6.19ZM342.37,49.76c0-1.14-.79-2.12-1.9-1.79-7.9,2.12-17.07,9.94-21.34,20.7,13.91-4.89,23.4-16.14,23.24-18.91Z"/></svg><span class="cs-context-title">Acme Design System — Case Study</span></div>
+    </div>
+  </div>
+  <div class="cs-topnav-wrap">
+    <button class="cs-nav-arrow left hidden" id="nav-arrow-left" aria-label="Scroll left"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 4L7 10L13 16" stroke="#1955A6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="cs-topnav-inner" id="cs-topnav-inner">
+      <a class="nav-link" href="#context">Context</a>
+      <a class="nav-link" href="#domain">Why This Domain</a>
+      <a class="nav-link" href="#approach">The Approach</a>
+      <a class="nav-link" href="#vibecoding">Vibe Coding</a>
+      <a class="nav-link" href="#tokens">Token Architecture</a>
+      <a class="nav-link" href="#cost">The Real Cost</a>
+      <a class="nav-link" href="#learnings">What I Learned</a>
+      <a class="nav-link" href="#scope">Scope</a>
+      <a class="nav-link" href="#aggrid">AG Grid</a>
+      <a class="nav-link" href="#deliverables">Deliverables</a>
+      <a class="nav-link" href="#gallery">Gallery</a>
+    </div>
+    <button class="cs-nav-arrow right hidden" id="nav-arrow-right" aria-label="Scroll right"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 4L13 10L7 16" stroke="#1955A6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+  <div class="main">
+
+    <!-- CONTEXT -->
+    <div id="context" class="section">
+      <div class="section-label">Context</div>
+      <h2>A problem I've been trying to solve for most of my career</h2>
+      <p>Every product I've ever worked on has had the same gap. You finish a design — screens, components, states, edge cases, the whole thing — and then it goes to engineering. And something gets lost in that handoff. Colors are close but not exact. Spacing is approximate. Components get rebuilt from scratch instead of consumed from a shared library. A button you carefully designed in six states ships as two. The design and the product slowly diverge, and every future design review becomes a negotiation about what actually counts.</p>
+      <p>The frustrating part was never the effort. Designers put enormous work into their designs. The question I kept coming back to was: <em>why can't that effort translate directly into something developers can consume — something scalable, consistent, that grows with the product and doesn't require a translator sitting between design and engineering?</em></p>
+      <p>I never had a smooth answer. Design tokens helped. Shared libraries helped. Better Figma handoff tooling helped. But it was always partial — always dependent on discipline and convention and hoping nobody went off-script. There was no structural guarantee of consistency.</p>
+      <p>Two technologies arrived that I believed could finally change this: the <strong>Figma Plugin API</strong> — which lets you generate and manipulate design files programmatically — and <strong>AI tools</strong> capable of writing production-quality code from design intent. I didn't want to read about them. I needed a real project to find out if they actually solved the problem or just made it easier to paper over.</p>
+      <p style="font-size:14px;color:#707070;line-height:1.75;border-left:2px solid #E0E0E0;padding-left:16px;margin-top:8px">A note on the name: <em>Acme</em> is a nod to Looney Tunes. Wile E. Coyote spent his career ordering experimental Acme products — jet-powered roller skates, portable holes, giant magnets — all in pursuit of the Road Runner. Powerful in theory. Unpredictable in practice. The design-to-dev handoff problem felt exactly like that: always one more tool away from being solved. The difference here is the Acme gear finally worked.</p>
+    </div>
+
+    <!-- DOMAIN -->
+    <div id="domain" class="section">
+      <div class="section-label">Why this domain</div>
+      <h2>Enterprise CRM — a demanding test</h2>
+      <p>I've spent a significant part of my career on modernization work — taking complex, legacy enterprise products and redesigning them with current standards. That work demands design systems. I've built them, watched them drift, rebuilt them. Enterprise CRM was the right domain to test against: complex data requirements, dense UI patterns, AG Grid for data tables, multi-state components, a product that grows over time and needs to stay consistent across a growing feature surface. If the approach worked here, it would work anywhere I'd actually need it.</p>
+    </div>
+
+    <!-- TENSION -->
+    <div class="tension">
+      <div class="tension-label">The structural problem</div>
+      <h3>The handoff was always a translation step.<br>And translations always lose something.</h3>
+      <p>Token values diverge between Figma and code. A developer adjusts a border radius because it looked wrong in the browser. A designer adds a variant directly in Figma without updating the documentation. A spacing value gets rounded. A color gets eyeballed. Six months in, the system has fractured into multiple versions of itself — and nobody's sure which one is correct. This isn't a discipline problem. It's an architecture problem. The design and the code were never the same thing — they were always two separate artifacts that had to be manually kept in sync. I wanted to know if that was actually necessary.</p>
+    </div>
+
+    <!-- APPROACH -->
+    <div id="approach" class="section">
+      <div class="section-label">The Approach</div>
+      <h2>One file as the source of truth. Everything else generated from it.</h2>
+      <p>I wrote a <strong>Figma plugin</strong> that generates the entire <strong>Acme Design System</strong> component library programmatically from a single HTML master file — a living style guide that defines every token, variant, and state. Run the plugin and it rebuilds the Figma library from scratch. The same tokens feed a developer-ready CSS file. There's nothing to keep in sync because there's only one thing to change.</p>
+      <p><strong>Claude Code</strong> — Anthropic's agentic coding tool — was central to building the plugin. Rather than writing hundreds of lines of Figma Plugin API code by hand, I directed Claude Code at the architectural level: specifying what each component needed to do, reviewing what it generated, catching API constraints it didn't know, and iterating. It handled implementation velocity. I handled design judgment and system architecture.</p>
+
+      <div class="arch">
+        <div class="arch-title">System Architecture</div>
+        <div class="arch-flow">
+          <div class="arch-node source">
+            <div class="arch-node-label">Source of truth</div>
+            <div class="arch-node-name">master.html</div>
+            <div class="arch-node-desc">Tokens · variants · states</div>
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">
+            <div class="arch-node-label">Generator</div>
+            <div class="arch-node-name">code.js</div>
+            <div class="arch-node-desc">Figma Plugin API · 23 commands</div>
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node output">
+            <div class="arch-node-label">Design output</div>
+            <div class="arch-node-name">Figma Library</div>
+            <div class="arch-node-desc">Full component system</div>
+          </div>
+        </div>
+        <div class="arch-down">↓</div>
+        <div class="arch-bottom">
+          <div class="arch-node dev">
+            <div class="arch-node-label">Dev handoff</div>
+            <div class="arch-node-name">ag-theme-default.css</div>
+            <div class="arch-node-desc">Drop-in AG Grid theme · same tokens</div>
+          </div>
+          <div class="arch-node feedback">
+            <div class="arch-node-label">Feedback loop</div>
+            <div class="arch-node-name">Figma MCP</div>
+            <div class="arch-node-desc">Live read · drift detection</div>
+          </div>
+        </div>
+      </div>
+
+      <p>The third layer is <strong>Figma MCP</strong> — a live connection between the AI conversation and the Figma file itself. It's what closes the feedback loop the plugin opens. When you make an exploratory change directly in Figma, MCP lets me read those exact values back out: fills, font sizes, padding, corner radius, all of it. No screenshots, no exports, no manual inspection. The change can be read, assessed, and codified back into the source file programmatically.</p>
+
+      <div class="pullquote">
+        <p>"Changing a spacing token means editing one value in one file and running one command. Every component in Figma rebuilds. The CSS updates. Nothing drifts because nothing is maintained separately."</p>
+      </div>
+      <div class="pullquote green">
+        <p>"The design effort and the developer artifact are finally the same thing. That's the answer I'd been looking for."</p>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-label">What this cost</div>
+          <h4>The upfront investment was significant</h4>
+          <p>Learning the Figma Plugin API — its constraints, its quirks, its unintuitive edge cases — and building component generation at scale was a much larger effort than placing components by hand. This is not the fast path to a component library.</p>
+        </div>
+        <div class="card accent">
+          <div class="card-label">What it proved</div>
+          <h4>Maintenance economics change completely</h4>
+          <p>Once the infrastructure exists, every future change is fast and safe. Adding a new density variant to the data table was one array edit and one plugin run. That's the payoff — not the initial build, but everything after it.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIBE CODING -->
+    <div id="vibecoding" class="section">
+      <div class="section-label">Method</div>
+      <h2>Vibe coding — but experience was the quality filter</h2>
+      <p>There's a term that's emerged for the way this project was built: <strong>vibe coding</strong>. You direct at the intent level. You describe what you want, the AI implements it, you review the output and iterate. You never write the code yourself. That's an accurate description of the method here — I didn't write a single line of Figma Plugin API code by hand.</p>
+      <p>But vibe coding gets misunderstood. The popular version of the story is that AI lowers the bar — that anyone can build anything now regardless of experience. That wasn't what happened here, and I think it's worth being direct about why.</p>
+
+      <div class="tension">
+        <div class="tension-label">The honest observation</div>
+        <h3>AI handled implementation velocity.<br>Experience handled everything that mattered.</h3>
+        <p>Twelve-plus years of shipping enterprise products — design systems that drifted, handoffs that broke down, AG Grid integrations that revealed token architecture gaps — that's what determined the quality of the output. The AI generated technically correct code. I caught the things that were architecturally wrong. Those are different skills, and only one of them transfers from the screen to the product.</p>
+      </div>
+
+      <p>Concrete examples: the AI's first pass at component variants stacked them positionally — valid code, wrong architecture. I knew immediately because I'd seen what happens when variant structure doesn't reflect semantic intent. The token naming came out descriptive by default — <code>blue-500</code> style — and I pushed it to semantic contracts because I'd watched descriptive naming break down across a product family. The AG Grid integration required specific token granularity that only became obvious once I'd mapped the full variable surface.</p>
+      <p>None of that comes from reading documentation. It comes from having built these things, watched them fail in production, and rebuilt them with better judgment the second time.</p>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-label">What vibe coding changed</div>
+          <h4>Implementation stopped being the bottleneck</h4>
+          <p>5,700+ lines of Figma Plugin API code, 23 commands, 20+ component types. Writing that by hand would have taken weeks and put the project out of reach. With AI handling implementation, the constraint shifted entirely.</p>
+        </div>
+        <div class="card accent">
+          <div class="card-label">What experience changed</div>
+          <h4>The right question became "what to ask for"</h4>
+          <p>Knowing what a production-grade component system actually needs — the edge cases, the architectural decisions, the constraints that only surface when you ship — that's what turned generated code into a system worth using.</p>
+        </div>
+      </div>
+
+      <div class="pullquote">
+        <p>"The experience doesn't become less relevant when AI writes the code. It becomes the differentiator."</p>
+      </div>
+    </div>
+
+    <!-- TOKENS -->
+    <div id="tokens" class="section">
+      <div class="section-label">Token Architecture</div>
+      <h2>Naming conventions designed to scale — across products, teams, and frameworks</h2>
+      <p>One of the recurring failures I'd seen in design systems wasn't drift between Figma and code — it was naming that made sense for one product at one moment in time, then broke down the moment a second product entered the picture. <code>blue-500</code> is a description. <code>--color-brand-primary</code> is a contract.</p>
+      <p>The token naming convention here is built as a contract — between design and engineering, between the current product and the next one, between the system today and the system two years from now.</p>
+
+      <div class="learnings" style="margin-top:24px;margin-bottom:24px">
+        <div class="learning-item">
+          <div class="learning-feat" style="min-width:160px">Semantic, not descriptive</div>
+          <div class="learning-text" style="font-size:13px">Tokens are named for their role, not their value. --color-brand-primary can change from navy to teal across a product family without renaming anything. The contract stays intact.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-feat" style="min-width:160px">Three-tier hierarchy</div>
+          <div class="learning-text" style="font-size:13px">Global tokens (raw values) → Semantic tokens (role-based aliases) → Component tokens (scoped overrides). A product family gets a new theme by overriding the semantic tier. Components never change.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-feat" style="min-width:160px">Framework-agnostic</div>
+          <div class="learning-text" style="font-size:13px">CSS custom properties work natively everywhere HTML renders — React, Angular, .NET Blazor, Vue, plain HTML. No translation layer, no framework-specific token file to maintain. One CSS file. Every stack.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-feat" style="min-width:160px">AG Grid alignment</div>
+          <div class="learning-text" style="font-size:13px">Token names map directly to AG Grid's CSS variable system. The design token and the framework variable are the same name. No lookup table needed.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-feat" style="min-width:160px">Grows with the product</div>
+          <div class="learning-text" style="font-size:13px">When a second product needs a different brand color, override --color-brand-primary at the theme level. Every component — buttons, badges, DataTable headers, focus rings — updates automatically.</div>
+        </div>
+      </div>
+
+      <div class="arch" style="margin-top:0">
+        <div class="arch-title">Token Tier Structure</div>
+        <div class="arch-flow">
+          <div class="arch-node source">
+            <div class="arch-node-label">Tier 1 — Global</div>
+            <div class="arch-node-name">Raw values</div>
+            <div class="arch-node-desc">#1955A6 · 16px · 400</div>
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">
+            <div class="arch-node-label">Tier 2 — Semantic</div>
+            <div class="arch-node-name">Role aliases</div>
+            <div class="arch-node-desc">--color-brand-primary</div>
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node output">
+            <div class="arch-node-label">Tier 3 — Component</div>
+            <div class="arch-node-name">Scoped tokens</div>
+            <div class="arch-node-desc">--button-bg-primary</div>
+          </div>
+        </div>
+        <div class="arch-stacks">
+          <div class="arch-stacks-label">Works across every stack</div>
+          <div class="arch-stacks-pills">
+            <span class="arch-stack-pill">React</span>
+            <span class="arch-stack-pill">Angular</span>
+            <span class="arch-stack-pill">.NET Blazor</span>
+            <span class="arch-stack-pill">Vue</span>
+            <span class="arch-stack-pill">Plain HTML</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REAL COST -->
+    <div id="cost" class="section">
+      <div class="section-label">The real cost</div>
+      <h2>This wasn't free — and that decision was deliberate</h2>
+      <p>I started this project on a free Claude plan. It hit a wall quickly. The conversation context needed to hold 5,700+ lines of plugin code across dozens of iterative sessions, generate and debug complex Figma Plugin API calls, and maintain architectural continuity across the full build. Free tier limits made that impossible at the scale this project demanded.</p>
+      <p>I upgraded to a paid plan specifically to continue. <strong>Claude Code</strong> — the agentic coding capability that wrote and iterated on the plugin — requires a paid subscription. <strong>Figma MCP</strong>, the live connection that lets Claude read directly from my Figma file, also requires it. So does the extended context window that keeps the full plugin in memory across a long working session.</p>
+      <p>That upgrade was a real decision, not an afterthought. It reframed the project from a free experiment into a deliberate investment in understanding what these tools could actually do at full capability. The question I was really asking changed: not <em>"what can AI do?"</em> but <em>"what does it cost to use AI seriously, and is the output worth it?"</em></p>
+      <div class="two-col" style="margin-top:24px">
+        <div class="card">
+          <div class="card-label">Where free tier stopped</div>
+          <h4>Context limits mid-build</h4>
+          <p>Holding the full plugin code in context across iterative sessions, debugging component generation, and maintaining architectural decisions across dozens of turns exceeded free tier limits. The work stalled.</p>
+        </div>
+        <div class="card accent">
+          <div class="card-label">What the upgrade unlocked</div>
+          <h4>Claude Code + Figma MCP</h4>
+          <p>Agentic coding that could write, test, and iterate on the plugin autonomously. Plus the live Figma connection that closes the design-to-dev feedback loop. Neither is available without a paid plan.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEARNINGS -->
+    <div id="learnings" class="section">
+      <div class="section-label">What I actually learned</div>
+      <h2>The technology taught me things the tool hides from designers</h2>
+      <p>Going deep on the Plugin API surfaces constraints you never encounter designing by hand. Those constraints turned out to be useful knowledge — they clarified what "component architecture" means at an implementation level.</p>
+      <div class="learnings">
+        <div class="learning-item">
+          <div class="learning-num">01</div>
+          <div class="learning-text"><strong>combineAsVariants requires distinct positions before combining.</strong> Stacked components collapse into one. A small API constraint that reflects something true — distinct variants need to be structurally, not just visually, distinct.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-num">02</div>
+          <div class="learning-text"><strong>The API has no asymmetric stroke weights.</strong> This forced a more principled approach to borders — using accent rectangles instead of side-specific strokes. The constraint produced better architecture.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-num">03</div>
+          <div class="learning-text"><strong>Instance swap requires explicit property wiring.</strong> setReferenceToComponentProperty is the API behind the right-panel dropdown that feels effortless in Figma. Understanding it changes how you think about component relationships.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-num">04</div>
+          <div class="learning-text"><strong>AG Grid's CSS variable system exposed gaps in my token structure.</strong> Its 200+ variables require specific token granularity. The integration revealed every place my token architecture was too coarse.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-num">05</div>
+          <div class="learning-text"><strong>Claude Code changes what's feasible for a designer to build alone.</strong> Writing 5,700+ lines of Figma Plugin API code by hand would have been prohibitive. With Claude Code handling implementation, the constraint shifted from "can I write this?" to "do I know what to ask for?" That's a fundamentally different and more interesting problem.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-num">06</div>
+          <div class="learning-text"><strong>Figma MCP closes the loop the plugin opens.</strong> The plugin pushes design intent into Figma. MCP reads it back out — live, with exact values. Design-to-dev handoff stops being a one-way export and becomes a continuous, verifiable feedback loop.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCOPE -->
+    <div id="scope" class="section">
+      <div class="section-label">Scope</div>
+      <h2>A complete system across a realistic enterprise domain</h2>
+      <p>The library covers everything a production CRM needs — not a curated portfolio subset, but the full surface area including the hard parts.</p>
+      <div class="inventory">
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Buttons</span><span class="inv-count">27 var</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Inputs</span><span class="inv-count">15 var</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Badges</span><span class="inv-count">30 var</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Checkboxes</span><span class="inv-count">4 sets</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Radio</span><span class="inv-count">4 sets</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Toggles</span><span class="inv-count">3 sets</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Alerts</span><span class="inv-count">6 var</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Cards</span><span class="inv-count">4 var</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Stat Cards</span><span class="inv-count">4 var</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Dropdowns</span><span class="inv-count">5 var</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Modals</span><span class="inv-count">3 var</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Tooltips</span><span class="inv-count">3 sets</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Navigation</span><span class="inv-count">4 sets</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Breadcrumbs</span><span class="inv-count">3 var</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Form Layouts</span><span class="inv-count">3 var</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">DataTable</span><span class="inv-count">5 densities</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Icons</span><span class="inv-count">64 Lucide</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Foundations</span><span class="inv-count">7 panels</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Typography</span><span class="inv-count">5 panels</span></div>
+        <div class="inv-item"><div class="dot"></div><span class="inv-name">Colors</span><span class="inv-count">10 groups</span></div>
+      </div>
+    </div>
+
+    <!-- AG GRID -->
+    <div id="aggrid" class="section">
+      <div class="section-label">The hardest component</div>
+      <h2>AG Grid — where most design systems stop trying</h2>
+      <p>I've shipped AG Grid across multiple enterprise products. There's a pattern that repeats without exception: teams start with a simpler grid, users get comfortable, and then the feature requests start. Column reordering. Multi-column sorting. Row grouping and tree structures. Saved grid layouts. Pinned columns. These aren't edge cases — they're the features that define a <em>serious</em> data product, and users who've had them once won't accept a grid that doesn't.</p>
+      <p>AG Grid ships all of this out of the box. The real cost of choosing a lighter grid isn't the initial build — it's the second year, when you're retrofitting features AG Grid solved years ago.</p>
+
+      <div class="learnings" style="margin-top:24px;margin-bottom:24px">
+        <div class="learning-item">
+          <div class="learning-feat" style="min-width:130px">Column reordering</div>
+          <div class="learning-text" style="font-size:13px">Users drag columns into the order that matches their mental model. Once they have it, it's a baseline expectation — not a nice-to-have.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-feat" style="min-width:130px">Multi-column sort</div>
+          <div class="learning-text" style="font-size:13px">Sort by status, then by revenue, then by date. The header interaction pattern needs designing and speccing, not improvising.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-feat" style="min-width:130px">Row tree structures</div>
+          <div class="learning-text" style="font-size:13px">Parent-child row grouping for hierarchical data. Common in CRM, finance, and ops products. Most grids can't do it.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-feat" style="min-width:130px">Saved layouts</div>
+          <div class="learning-text" style="font-size:13px">Users configure once and expect it to persist. AG Grid's state management enables session storage, user preferences, and shareable views.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-feat" style="min-width:130px">Pinned columns</div>
+          <div class="learning-text" style="font-size:13px">Lock identifier columns on the left while scrolling wide datasets. A basic usability requirement for any table with more than 6–7 columns.</div>
+        </div>
+      </div>
+
+      <p>That experience shaped how far the design system needed to go. Most systems stop at the grid itself. But the features users actually demand live <em>around</em> the grid: the toolbar that controls it, the panels that configure it, the header states that communicate what it's doing. So I built all of it.</p>
+
+      <div class="two-col" style="margin-top:24px">
+        <div class="card">
+          <div class="card-label">The grid</div>
+          <h4>DataTable — 5 density variants</h4>
+          <p>UltraCompact 24px through Spacious 56px. All row states, loading skeletons, empty states, active filter bars. Structured to match AG Grid's actual visual architecture, not a simplified approximation of it.</p>
+        </div>
+        <div class="card accent">
+          <div class="card-label">The controls</div>
+          <h4>Toolbar + Chooser + Views + Headers</h4>
+          <p>Grid Toolbar (search, filter pills, save view, export). Column Chooser panel (show/hide, reorder, reset). Saved Views dropdown. Column Header states (sort asc/desc, filter badge, combined).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DELIVERABLES -->
+    <div id="deliverables" class="section">
+      <div class="section-label">Deliverables</div>
+      <h2>A complete documentation set — six handoff docs plus a master reference</h2>
+      <p>Alongside the Figma plugin and component library, the Acme Design System ships with a full suite of handoff documents — one for every dimension of the system a designer or developer needs to work from. Each document is a standalone HTML reference, consistently branded and cross-linked.</p>
+      <div class="learnings" style="margin-top:24px">
+        <div class="learning-item">
+          <div class="learning-feat" style="min-width:220px"><a class="deliverable-link" href="design-system-master.html" target="_blank">design-system-master.html<span class="link-icon">↗</span></a></div>
+          <div class="learning-text" style="font-size:13px">The master reference — all foundations, components, tokens, and patterns in a single navigable document with Design / Dev mode toggle.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-feat" style="min-width:220px"><a class="deliverable-link" href="01-component-usage-guide.html" target="_blank">Component Usage Guide<span class="link-icon">↗</span></a></div>
+          <div class="learning-text" style="font-size:13px">When to use each component, what variants exist, and what states are covered. Alphabetically ordered across all 20 component types.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-feat" style="min-width:220px"><a class="deliverable-link" href="02-design-token-reference.html" target="_blank">Design Token Reference<span class="link-icon">↗</span></a></div>
+          <div class="learning-text" style="font-size:13px">Every token in the system — color, spacing, radius, shadow, border, and typography — with its CSS variable name, raw value, and usage context.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-feat" style="min-width:220px"><a class="deliverable-link" href="03-figma-to-code-mapping.html" target="_blank">Figma to Code Mapping<span class="link-icon">↗</span></a></div>
+          <div class="learning-text" style="font-size:13px">Explicit mapping between Figma component properties and their CSS/code equivalents. Closes the gap between what designers name things and what developers call them.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-feat" style="min-width:220px"><a class="deliverable-link" href="04-spacing-grid-spec.html" target="_blank">Spacing &amp; Grid Specification<span class="link-icon">↗</span></a></div>
+          <div class="learning-text" style="font-size:13px">The full spacing scale, grid system, layout zones, and density definitions — with both design-facing and developer-facing values side by side.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-feat" style="min-width:220px"><a class="deliverable-link" href="05-accessibility-checklist.html" target="_blank">Accessibility Checklist<span class="link-icon">↗</span></a></div>
+          <div class="learning-text" style="font-size:13px">WCAG 2.1 AA compliance checklist with visual examples per component — covering color contrast, keyboard navigation, focus states, screen reader support, and touch targets.</div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-feat" style="min-width:220px"><a class="deliverable-link" href="06-icon-usage-guide.html" target="_blank">Icon Usage Guide<span class="link-icon">↗</span></a></div>
+          <div class="learning-text" style="font-size:13px">All 56 Lucide icons organized by category — sizes, semantic color usage, and rules for when icons should stand alone versus accompany labels.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GALLERY -->
+
+    <div id="gallery" class="section">
+      <div class="section-label">Project Gallery</div>
+      <h2>The work</h2>
+      <p style="margin-bottom:24px">Screenshots from the Figma file. Replace placeholder blocks with exported Figma screenshots — recommended 1600px wide at 2x for retina.</p>
+      <div class="gallery-grid-2">
+        <div class="gallery-placeholder"><img src="images/image_01.png" style="width:100%;display:block;border-radius:8px" alt="Component Library"/><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#909090;text-transform:uppercase;letter-spacing:.08em;padding:8px 12px">Component Library — Buttons, Inputs, Badges</div></div>
+        <div class="gallery-placeholder"><img src="images/image_02.png" style="width:100%;display:block;border-radius:8px" alt="DataTable"/><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#909090;text-transform:uppercase;letter-spacing:.08em;padding:8px 12px">DataTable — 5 Density Variants</div></div>
+      </div>
+      <div class="gallery-grid-2">
+        <div class="gallery-placeholder"><img src="images/image_03.png" style="width:100%;display:block;border-radius:8px" alt="AG Grid Controls"/><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#909090;text-transform:uppercase;letter-spacing:.08em;padding:8px 12px">AG Grid Controls — Toolbar, Column Chooser, Saved Views</div></div>
+        <div class="gallery-placeholder"><img src="images/image_04.png" style="width:100%;display:block;border-radius:8px" alt="Column Headers"/><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#909090;text-transform:uppercase;letter-spacing:.08em;padding:8px 12px">Column Header States — Sort, Filter, Combined</div></div>
+      </div>
+      <div class="gallery-grid-3">
+        <div class="gallery-placeholder"><img src="images/image_05.png" style="width:100%;display:block;border-radius:8px" alt="Foundations"/><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#909090;text-transform:uppercase;letter-spacing:.08em;padding:8px 12px">Foundations — Spacing, Radius, Elevation</div></div>
+        <div class="gallery-placeholder"><img src="images/image_06.png" style="width:100%;display:block;border-radius:8px" alt="Colors"/><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#909090;text-transform:uppercase;letter-spacing:.08em;padding:8px 12px">Colors — All 10 Groups</div></div>
+        <div class="gallery-placeholder"><img src="images/image_07.png" style="width:100%;display:block;border-radius:8px" alt="Icons"/><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#909090;text-transform:uppercase;letter-spacing:.08em;padding:8px 12px">Icons — 64 Lucide</div></div>
+      </div>
+    </div>
+
+    <!-- REFLECTION -->
+    <div class="reflection">
+      <div class="reflection-icon">↩</div>
+      <div>
+        <div class="reflection-label">What I'd do differently</div>
+        <p>Start with the AG Grid theme, not the button components. Mapping tokens to AG Grid's 200+ CSS variables forces every important architectural decision first — what the spacing scale needs to cover, what "density" means as a property, which semantic color tokens are necessary versus merely convenient. Starting from the hardest constraint would have produced a cleaner architecture faster.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="footer">
+      <span class="tag">Design Systems</span>
+      <span class="tag">Figma Plugin API</span>
+      <span class="tag">Claude Code</span>
+      <span class="tag">Figma MCP</span>
+      <span class="tag">Token Architecture</span>
+      <span class="tag">AG Grid</span>
+      <span class="tag">Design-to-Dev</span>
+      <span class="tag">Modernization</span>
+    </div>
+
+  </div>
+</div><!-- /layout -->
+
+<script>
+const links = document.querySelectorAll('.nav-link');
+const sections = document.querySelectorAll('[id]');
+const navInner = document.getElementById('cs-topnav-inner');
+const arrowLeft = document.getElementById('nav-arrow-left');
+const arrowRight = document.getElementById('nav-arrow-right');
+const contextBar = document.getElementById('cs-context-bar');
+const hero = document.querySelector('.hero');
+
+function updateArrows() {
+  if (!navInner) return;
+  const scrollLeft = navInner.scrollLeft;
+  const maxScroll = navInner.scrollWidth - navInner.clientWidth;
+  arrowLeft.classList.toggle('hidden', scrollLeft <= 4);
+  arrowRight.classList.toggle('hidden', scrollLeft >= maxScroll - 4);
+}
+
+if (navInner) {
+  navInner.addEventListener('scroll', updateArrows);
+  window.addEventListener('resize', updateArrows);
+  setTimeout(updateArrows, 100);
+}
+
+arrowLeft.addEventListener('click', () => navInner.scrollBy({left:-200, behavior:'smooth'}));
+arrowRight.addEventListener('click', () => navInner.scrollBy({left:200, behavior:'smooth'}));
+
+window.addEventListener('scroll', () => {
+  // Context bar — show when hero is out of view
+  const heroBottom = hero.getBoundingClientRect().bottom;
+  contextBar.classList.toggle('visible', heroBottom < 0);
+
+  // Active nav link
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+  links.forEach(l => { l.classList.toggle('active', l.getAttribute('href') === '#' + current); });
+  const activeLink = document.querySelector('.nav-link.active');
+  if (activeLink) activeLink.scrollIntoView({block:'nearest',inline:'center'});
+});
+</script>
+</body>
+</html>
