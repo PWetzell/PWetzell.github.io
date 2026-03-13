@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Madison CRM — Navigator · Paul Wentzell</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;color:#1a1a1a;background:#fafaf8;overflow-x:hidden}html{scrollbar-width:none;-ms-overflow-style:none}html::-webkit-scrollbar{display:none}
+.hero{background:#0B2F5C;padding:48px 0 52px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(25,85,166,0.4) 0%,transparent 70%);pointer-events:none}
+.hero-inner{max-width:1100px;margin:0 auto;padding:0 40px;position:relative;z-index:1}
+.hook{font-family:'DM Serif Display',serif;font-size:clamp(26px,4vw,44px);line-height:1.12;color:#fff;margin-bottom:28px;max-width:860px}
+.hook em{font-style:italic;color:#A8C4E4}
+.hero-stats{display:flex;flex-wrap:wrap;padding:24px 0 0;border-top:1px solid rgba(168,196,228,.2);justify-content:flex-start;gap:48px}
+.hero-stat-num{font-family:'DM Serif Display',serif;font-size:32px;color:#fff;line-height:1;margin-bottom:4px}
+.hero-stat-num em{font-style:normal;color:#A8C4E4;font-size:24px}
+.hero-stat-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#A8C4E4}
+.meta-row{display:flex;flex-wrap:wrap;padding-top:24px;border-top:1px solid rgba(168,196,228,.2);justify-content:flex-start;align-items:flex-start;margin-top:28px;row-gap:16px;gap:40px}
+.meta-item label{display:block;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#A8C4E4;margin-bottom:4px;white-space:nowrap}
+.meta-item span{font-size:11px;font-weight:500;color:#fff;display:block;white-space:nowrap}
+.framework-badge{margin-top:20px;display:inline-flex;align-items:center;gap:8px;background:rgba(168,196,228,.15);border:1px solid rgba(168,196,228,.35);border-radius:6px;padding:8px 14px}
+.framework-badge span{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#A8C4E4}
+.framework-badge-dot{width:6px;height:6px;border-radius:50%;background:#A8C4E4;flex-shrink:0}
+.cs-topnav{background:#fff;border-bottom:1px solid #E0E0E0;position:sticky;top:0;z-index:100;padding-bottom:8px}
+.cs-context-bar{height:0;overflow:hidden;transition:height .25s ease;background:#0B2F5C}
+.cs-context-bar.visible{height:36px}
+.cs-context-bar-inner{max-width:1100px;margin:0 auto;padding:0 40px;display:flex;align-items:center;height:36px}
+.cs-context-title{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#fff;font-weight:600}
+.cs-topnav-wrap{position:relative;max-width:1100px;margin:0 auto}
+.cs-topnav-inner{padding:0 16px;display:flex;justify-content:center;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth}
+.cs-topnav-inner::-webkit-scrollbar{display:none}
+.cs-nav-arrow{display:none;position:absolute;top:0;bottom:0;width:44px;align-items:center;justify-content:center;background:#fff;border:none;cursor:pointer;color:#1955A6;z-index:10;transition:opacity .2s}
+.cs-nav-arrow.left{left:0;background:linear-gradient(to right,#fff 60%,transparent)}
+.cs-nav-arrow.right{right:0;background:linear-gradient(to left,#fff 60%,transparent)}
+.cs-nav-arrow.hidden{opacity:0;pointer-events:none}
+.nav-link{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:#707070;padding:14px 10px 6px;border-bottom:2px solid transparent;text-decoration:none;transition:color .15s,border-color .15s;white-space:nowrap}
+.nav-link:hover,.nav-link.active{color:#1955A6;border-color:#1955A6}
+.nav-link.active{font-weight:600}
+.layout{max-width:1100px;margin:0 auto;padding:0 40px}
+.main{padding-bottom:80px;padding-top:48px}
+.section{padding:56px 0 0;scroll-margin-top:60px}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#1955A6;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;max-width:32px;height:1px;background:#1955A6}
+.section h2{font-family:'DM Serif Display',serif;font-size:clamp(22px,3vw,32px);line-height:1.2;color:#0B2F5C;margin-bottom:16px;font-weight:400}
+.section p{font-size:15px;line-height:1.75;color:#3a3a3a;margin-bottom:16px}
+.section p:last-child{margin-bottom:0}
+.section p strong{color:#1a1a1a;font-weight:600}
+.tension{background:#E7EFF7;border:1px solid #A8C4E4;border-radius:10px;padding:32px 40px;margin:40px 0}
+.tension-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#1955A6;margin-bottom:12px}
+.tension h3{font-family:'DM Serif Display',serif;font-size:clamp(18px,2.5vw,24px);color:#0B2F5C;line-height:1.3;font-weight:400;margin-bottom:12px}
+.tension p{font-size:14px;line-height:1.7;color:#3a3a3a;margin:0}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:32px 0}
+.card{border:1px solid #E0E0E0;border-radius:10px;padding:24px;background:#fff}
+.card.accent{border-color:#A8C4E4;background:#E7EFF7}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#1955A6;margin-bottom:10px}
+.card h4{font-family:'DM Serif Display',serif;font-size:18px;color:#0B2F5C;margin-bottom:8px;font-weight:400}
+.card p{font-size:13px;line-height:1.65;color:#505050;margin:0}
+.process-steps{display:flex;flex-direction:column;gap:0;margin:32px 0;position:relative}
+.process-steps::before{content:'';position:absolute;left:20px;top:0;bottom:0;width:1px;background:#E0E0E0;z-index:0}
+.step{display:flex;gap:20px;align-items:flex-start;padding:20px 0;position:relative;z-index:1}
+.step-num{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;color:#fff;background:#1955A6;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:.05em}
+.step-body{padding-top:8px}
+.step-title{font-family:'DM Serif Display',serif;font-size:17px;color:#0B2F5C;font-weight:400;margin-bottom:4px}
+.step-text{font-size:13px;line-height:1.65;color:#505050}
+.senior-signal{background:linear-gradient(135deg,#0B2F5C 0%,#1955A6 100%);border-radius:10px;padding:32px 40px;margin:40px 0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px}
+.ss-item-label{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#A8C4E4;margin-bottom:8px}
+.ss-item-text{font-size:13px;line-height:1.65;color:#fff}
+.gator-callout{background:#fff;border:1px solid #A8C4E4;border-left:4px solid #1955A6;border-radius:10px;padding:24px 28px;margin:32px 0;display:flex;gap:16px;align-items:flex-start}
+.gator-callout-icon{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#1955A6;background:#E7EFF7;padding:6px 10px;border-radius:4px;flex-shrink:0;white-space:nowrap;margin-top:2px}
+.gator-callout-text{font-size:13px;line-height:1.65;color:#3a3a3a}
+.gator-callout-text strong{color:#0B2F5C}
+.pullquote{border-left:3px solid #1955A6;padding:16px 0 16px 24px;margin:32px 0}
+.pullquote p{font-family:'DM Serif Display',serif;font-size:clamp(16px,2vw,20px);line-height:1.45;color:#0B2F5C;font-style:italic;margin:0}
+.outcomes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0}
+.outcome-item{background:#fff;border:1px solid #E0E0E0;border-left:3px solid #1955A6;border-radius:8px;padding:16px 20px;display:flex;gap:12px;align-items:flex-start}
+.outcome-dot{width:6px;height:6px;border-radius:50%;background:#1955A6;flex-shrink:0;margin-top:6px}
+.outcome-text{font-size:13px;line-height:1.6;color:#3a3a3a}
+.gallery-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.gallery-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.gallery-grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.gallery-placeholder{background:#F0F0F0;border-radius:10px;overflow:hidden;border:1px solid #E0E0E0}
+.gallery-placeholder img{width:100%;display:block}
+.gallery-caption{font-family:'JetBrains Mono',monospace;font-size:9px;color:#909090;text-transform:uppercase;letter-spacing:.08em;padding:8px 12px;background:#fff}
+.reflection{background:#F0F5FF;border:1px solid #C5D8F5;border-radius:10px;padding:28px 32px;margin-top:48px;display:flex;gap:20px;align-items:flex-start}
+.reflection-icon{font-size:20px;flex-shrink:0;margin-top:2px;color:#1955A6}
+.reflection-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#1955A6;margin-bottom:10px}
+.reflection p{font-size:14px;line-height:1.75;color:#3a3a3a;margin:0}
+.divider{height:1px;background:#E0E0E0;margin-top:48px}
+.footer{display:flex;flex-wrap:wrap;gap:8px;padding:24px 0 0}
+.tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;background:#F0F0F0;color:#505050;padding:5px 10px;border-radius:4px}
+@media(max-width:768px){
+  .hero-inner,.layout{padding:0 20px}
+  .two-col,.gallery-grid-2,.gallery-grid-3,.gallery-grid-4,.senior-signal,.outcomes{grid-template-columns:1fr 1fr}
+  .hero-stats{gap:28px}
+  .tension{padding:24px}
+  .process-steps::before{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <h1 class="hook">Designing a <em>unified contact relationship system</em> for Navigator — Madison's staffing CRM.</h1>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">1</div>
+        <div class="hero-stat-label">Unified CRM workspace</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">3</div>
+        <div class="hero-stat-label">Coordinator workflows unified</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">↑</div>
+        <div class="hero-stat-label">Data consistency & speed</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">DS</div>
+        <div class="hero-stat-label">Gator Design System applied</div>
+      </div>
+    </div>
+    <div class="meta-row">
+      <div class="meta-item"><label>Client</label><span>Madison Resources</span></div>
+      <div class="meta-item"><label>Product</label><span>Navigator CRM</span></div>
+      <div class="meta-item"><label>Role</label><span>Senior UX Designer</span></div>
+      <div class="meta-item"><label>Team</label><span>UX, Product, Engineering</span></div>
+      <div class="meta-item"><label>Tools</label><span>Figma, Jira, Confluence</span></div>
+    </div>
+    <div class="framework-badge">
+      <div class="framework-badge-dot"></div>
+      <span>Built on .NET Blazor — Mobile-First Responsive — Gator Design System</span>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="main">
+
+    <!-- THE PROBLEM -->
+    <div id="problem" class="section">
+      <div class="section-label">The Problem</div>
+      <h2>Staffing coordinators managing contacts across fragmented views with no unified relationship model — and no consistent way to track what mattered.</h2>
+      <p>Madison Resources' Navigator CRM had grown organically — contact data was spread across disconnected views, relationship context was buried or missing, and coordinators were working around the system rather than through it. <strong>Data entry was inconsistent, relationship tracking was manual, and there was no clear information hierarchy to guide decision-making.</strong></p>
+      <p>The goal was to design a unified contact relationship management experience inside Navigator — built on .NET Blazor and powered by the Gator Design System established earlier in the engagement.</p>
+
+      <div class="tension">
+        <div class="tension-label">The core tension</div>
+        <h3>Staffing coordinators needed to see the full relationship context of every contact — but the system was built for data storage, not relationship visibility.</h3>
+        <p>Every contact existed in isolation. There was no way to quickly understand who a contact was connected to, what their status was across active placements, or where they sat in the coordinator's workflow. Surfacing that context — without overwhelming the interface — required a careful rethinking of information architecture, not just visual design.</p>
+      </div>
+    </div>
+
+    <!-- MY ROLE -->
+    <div id="role" class="section">
+      <div class="section-label">My Role</div>
+      <h2>Led UX design for Navigator's contact relationship system — from information architecture through .NET Blazor component delivery.</h2>
+
+      <div class="senior-signal" style="margin-top:24px">
+        <div class="ss-item">
+          <div class="ss-item-label">What I owned</div>
+          <div class="ss-item-text">End-to-end UX — contact taxonomy, relationship architecture, information hierarchy, component design using the Gator Design System, and implementation-ready specs for .NET Blazor engineering teams.</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-item-label">The design system advantage</div>
+          <div class="ss-item-text">Having built Gator earlier in the engagement, every component decision in Navigator was grounded in an already-governed system. No ad-hoc solutions — just intentional application of established patterns to a complex CRM context.</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-item-label">The .NET Blazor context</div>
+          <div class="ss-item-text">All components were designed and specified for .NET Blazor — including component layout patterns, state variants, and integration specs. Gator's token architecture translated directly into Blazor's component model, ensuring pixel-accurate implementation without design-to-dev gaps.</div>
+        </div>
+      </div>
+
+      <div class="gator-callout">
+        <div class="gator-callout-icon">Gator DS</div>
+        <div class="gator-callout-text"><strong>This project was built on the Gator Design System</strong> — the atomic component library and token architecture created for Madison Resources earlier in the engagement. Every UI pattern in Navigator CRM drew from Gator's governed component set. Components were specified with Blazor layout patterns, binding expectations, and integration guidance in mind — ensuring the design system worked <em>with</em> Blazor's component model, not around it.</div>
+      </div>
+    </div>
+
+    <!-- PROCESS -->
+    <div id="process" class="section">
+      <div class="section-label">Process</div>
+      <h2>From contact taxonomy and relationship mapping to component architecture and .NET Blazor handoff.</h2>
+      <p>Partnered with product and engineering to untangle Navigator's contact model, define a clear relationship hierarchy, and design a CRM experience that gave coordinators visibility into what mattered — without adding complexity.</p>
+
+      <div class="process-steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-body">
+            <div class="step-title">Discovery & Understanding the Problem</div>
+            <div class="step-text">Audited existing Navigator contact views, interviewed staffing coordinators, and mapped where the current system created friction — missed relationship context, redundant data entry, inconsistent status tracking across placements.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-body">
+            <div class="step-title">Mobile-First Responsive Strategy</div>
+            <div class="step-text">Before any layout work began, established a mobile-first responsive foundation — a deliberate strategic decision, not a late requirement. The product roadmap was uncertain: coordinators worked primarily on desktop, but whether mobile access would ever be needed was unknown. Designing mobile-first from the start meant the system could scale to any screen size without a costly retrofit. Every layout, component, and interaction pattern was designed for mobile constraints first, then progressively enhanced for tablet and desktop.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-body">
+            <div class="step-title">Contact Taxonomy & Information Architecture</div>
+            <div class="step-text">Defined the contact data model — entity types, relationship categories, status hierarchies, and the connections between contacts, companies, and active placements. Built the taxonomy that would anchor every view in the system.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <div class="step-title">Relationship Mapping & Flow Architecture</div>
+            <div class="step-text">Designed the relationship model — how contacts connected to companies, placements, and coordinators — and translated that into navigable flows. Progressive disclosure ensured depth was available without overwhelming the primary view.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <div class="step-title">Card-Based Component Architecture</div>
+            <div class="step-text">Designed a card-based system using Gator DS components — contact cards, relationship panels, status indicators, and command patterns — that gave coordinators scannable, action-ready views of every contact and their context.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">05</div>
+          <div class="step-body">
+            <div class="step-title">UX Architecture & Prototyping</div>
+            <div class="step-text">Built end-to-end prototypes covering contact search, profile views, relationship navigation, and data entry flows — validated with coordinators before engineering handoff.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">06</div>
+          <div class="step-body">
+            <div class="step-title">.NET Blazor Implementation Support</div>
+            <div class="step-text">Delivered Gator-aligned, implementation-ready specs for .NET Blazor — covering component states, interaction patterns, data binding expectations, and edge cases. Stayed in through integration to close the gap between design and shipped behavior.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-label">Relationship visibility</div>
+          <h4>Contact context at a glance</h4>
+          <p>The core design challenge was surfacing relationship depth — who a contact was connected to, their placement history, and their current status — without requiring coordinators to navigate across multiple views. A progressive disclosure model solved it.</p>
+        </div>
+        <div class="card accent">
+          <div class="card-label">Gator DS in practice</div>
+          <h4>Governed components, faster delivery</h4>
+          <p>Using Gator DS meant every pattern decision was grounded in an established system — card layouts, filter patterns, status badges, and command surfaces were all pre-governed. Engineering could move faster because the design was already consistent and documented.</p>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="card accent">
+          <div class="card-label">Blazor component design</div>
+          <h4>Designed for how Blazor components actually work</h4>
+          <p>Specs included Blazor-specific layout patterns, component state definitions, parameter bindings, and responsive behavior — not just visual mockups. This meant developers had everything they needed to implement accurately in Blazor without back-and-forth on interaction gaps.</p>
+        </div>
+        <div class="card">
+          <div class="card-label">Mobile-first responsive design</div>
+          <h4>Built to scale — desktop today, mobile when needed</h4>
+          <p>Navigator CRM was designed mobile-first from the start — not because mobile was a known requirement, but because the product roadmap was uncertain. Designing responsive from day one meant Madison wouldn't face a costly retrofit if coordinators ever needed CRM access on the go. Every component was specified for desktop, tablet, and mobile breakpoints, with Blazor rendering constraints accounted for across all three.</p>
+        </div>
+      </div>
+
+      <div class="pullquote">
+        <p>"Designing on top of a system you built yourself means you can move faster — and make better decisions. Gator wasn't just a library, it was institutional knowledge embedded in components."</p>
+      </div>
+    </div>
+
+    <!-- OUTCOMES -->
+    <div id="outcomes" class="section">
+      <div class="section-label">Outcomes</div>
+      <h2>A governed, relationship-aware CRM experience — consistently delivered across Navigator on .NET Blazor.</h2>
+
+      <div class="outcomes">
+        <div class="outcome-item"><div class="outcome-dot"></div><div class="outcome-text"><strong>Unified contact relationship model</strong> — coordinators could see the full context of every contact without navigating across disconnected views.</div></div>
+        <div class="outcome-item"><div class="outcome-dot"></div><div class="outcome-text"><strong>Consistent data entry and status tracking</strong> — governed Gator components replaced ad-hoc patterns, reducing coordinator errors and rework.</div></div>
+        <div class="outcome-item"><div class="outcome-dot"></div><div class="outcome-text"><strong>Accelerated .NET Blazor delivery</strong> — implementation-ready Gator specs reduced design-to-dev handoff friction and engineering rework cycles.</div></div>
+        <div class="outcome-item"><div class="outcome-dot"></div><div class="outcome-text"><strong>Scalable relationship architecture</strong> — the contact taxonomy and relationship model became the foundation for future Navigator CRM modules.</div></div>
+        <div class="outcome-item"><div class="outcome-dot"></div><div class="outcome-text"><strong>Design system continuity</strong> — Gator DS applied end-to-end across Navigator, reinforcing the system investment made earlier in the engagement.</div></div>
+        <div class="outcome-item"><div class="outcome-dot"></div><div class="outcome-text"><strong>Improved coordinator workflow clarity</strong> — progressive disclosure and card-based views reduced cognitive load and gave coordinators faster access to what they needed.</div></div>
+      </div>
+    </div>
+
+    <!-- GALLERY -->
+    <div id="gallery" class="section">
+      <div class="section-label">Project Gallery</div>
+      <h2>The work</h2>
+      <div class="gallery-grid-3" style="margin-top:24px">
+        <div class="gallery-placeholder"><img src="Madison-images/image_01.png" style="width:100%;display:block" alt="Contact List"/><div class="gallery-caption">Contact List</div></div>
+        <div class="gallery-placeholder"><img src="Madison-images/image_02.png" style="width:100%;display:block" alt="Contact Profile"/><div class="gallery-caption">Contact Profile</div></div>
+        <div class="gallery-placeholder"><img src="Madison-images/image_03.png" style="width:100%;display:block" alt="Relationship Map"/><div class="gallery-caption">Relationship Map</div></div>
+      </div>
+      <div class="gallery-grid-3">
+        <div class="gallery-placeholder"><img src="Madison-images/image_04.png" style="width:100%;display:block" alt="Dashboard"/><div class="gallery-caption">Dashboard</div></div>
+        <div class="gallery-placeholder"><img src="Madison-images/image_05.png" style="width:100%;display:block" alt="Data Table"/><div class="gallery-caption">Data Table</div></div>
+        <div class="gallery-placeholder"><img src="Madison-images/image_06.png" style="width:100%;display:block" alt="Command & Filter"/><div class="gallery-caption">Command &amp; Filter</div></div>
+      </div>
+      <div class="gallery-grid-3">
+        <div class="gallery-placeholder"><img src="Madison-images/image_07.png" style="width:100%;display:block" alt="Component System"/><div class="gallery-caption">Component System</div></div>
+        <div class="gallery-placeholder"><img src="Madison-images/image_08.png" style="width:100%;display:block" alt="Contact Entry Form"/><div class="gallery-caption">Contact Entry Form</div></div>
+        <div class="gallery-placeholder"><img src="Madison-images/image_09.png" style="width:100%;display:block" alt="Status & Placement View"/><div class="gallery-caption">Status &amp; Placement View</div></div>
+      </div>
+    </div>
+
+    <!-- REFLECTION -->
+    <div class="reflection">
+      <div class="reflection-icon">↩</div>
+      <div>
+        <div class="reflection-label">What I'd do differently</div>
+        <p>Involve .NET Blazor engineers earlier in the component review cycle. The Gator system translated well into Blazor, but some interaction patterns — particularly around data binding for relationship panels and progressive disclosure triggers — required revision once the engineering team flagged server-side rendering constraints. Earlier joint reviews between design and Blazor engineers would have caught those gaps before they became handoff friction.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="footer">
+      <span class="tag">CRM Design</span>
+      <span class="tag">.NET Blazor</span>
+      <span class="tag">Gator Design System</span>
+      <span class="tag">Information Architecture</span>
+      <span class="tag">Relationship Mapping</span>
+      <span class="tag">Staffing</span>
+      <span class="tag">Enterprise UX</span>
+      <span class="tag">Blazor Component Design</span>
+      <span class="tag">Mobile-First Responsive</span>
+      <span class="tag">Component Systems</span>
+      <span class="tag">Figma</span>
+    </div>
+
+  </div>
+</div>
+
+<script>
+</script>
+
+</body>
+</html>
