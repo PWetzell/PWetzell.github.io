@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aircraft Engine Oil Analysis · Paul Wentzell</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;color:#1a1a1a;background:#fafaf8;overflow-x:hidden}html{scrollbar-width:none;-ms-overflow-style:none}html::-webkit-scrollbar{display:none}
+.hero{background:#0B2F5C;padding:48px 0 52px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(25,85,166,0.4) 0%,transparent 70%);pointer-events:none}
+.hero-inner{max-width:1100px;margin:0 auto;padding:0 40px;position:relative;z-index:1}
+.hook{font-family:'DM Serif Display',serif;font-size:clamp(26px,4vw,44px);line-height:1.12;color:#fff;margin-bottom:28px;max-width:860px}
+.hook em{font-style:italic;color:#A8C4E4}
+.hero-stats{display:flex;flex-wrap:wrap;padding:24px 0 0;border-top:1px solid rgba(168,196,228,.2);justify-content:flex-start;gap:48px}
+.hero-stat-num{font-family:'DM Serif Display',serif;font-size:32px;color:#fff;line-height:1;margin-bottom:4px}
+.hero-stat-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#A8C4E4}
+.meta-row{display:flex;flex-wrap:wrap;padding-top:24px;border-top:1px solid rgba(168,196,228,.2);justify-content:flex-start;align-items:flex-start;margin-top:28px;row-gap:16px;gap:40px}
+.meta-item label{display:block;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#A8C4E4;margin-bottom:4px;white-space:nowrap}
+.meta-item span{font-size:11px;font-weight:500;color:#fff;display:block;white-space:nowrap}
+.framework-badge{margin-top:20px;display:inline-flex;align-items:center;gap:8px;background:rgba(168,196,228,.15);border:1px solid rgba(168,196,228,.35);border-radius:6px;padding:8px 14px}
+.framework-badge span{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#A8C4E4}
+.framework-badge-dot{width:6px;height:6px;border-radius:50%;background:#A8C4E4;flex-shrink:0}
+.cs-topnav{background:#fff;border-bottom:1px solid #E0E0E0;position:sticky;top:0;z-index:100;padding-bottom:8px}
+.cs-context-bar{height:0;overflow:hidden;transition:height .25s ease;background:#0B2F5C}
+.cs-context-bar.visible{height:36px}
+.cs-context-bar-inner{max-width:1100px;margin:0 auto;padding:0 40px;display:flex;align-items:center;height:36px}
+.cs-context-title{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#fff;font-weight:600}
+.cs-topnav-wrap{position:relative;max-width:1100px;margin:0 auto}
+.cs-topnav-inner{padding:0 16px;display:flex;justify-content:center;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth}
+.cs-topnav-inner::-webkit-scrollbar{display:none}
+.cs-nav-arrow{display:none;position:absolute;top:0;bottom:0;width:44px;align-items:center;justify-content:center;background:#fff;border:none;cursor:pointer;color:#1955A6;z-index:10;transition:opacity .2s}
+.cs-nav-arrow.left{left:0;background:linear-gradient(to right,#fff 60%,transparent)}
+.cs-nav-arrow.right{right:0;background:linear-gradient(to left,#fff 60%,transparent)}
+.cs-nav-arrow.hidden{opacity:0;pointer-events:none}
+.nav-link{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:#707070;padding:14px 10px 6px;border-bottom:2px solid transparent;text-decoration:none;transition:color .15s,border-color .15s;white-space:nowrap}
+.nav-link:hover,.nav-link.active{color:#1955A6;border-color:#1955A6}
+.nav-link.active{font-weight:600}
+.layout{max-width:1100px;margin:0 auto;padding:0 40px}
+.main{padding-bottom:80px;padding-top:48px}
+.section{padding:56px 0 0;scroll-margin-top:60px}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#1955A6;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;max-width:32px;height:1px;background:#1955A6}
+.section h2{font-family:'DM Serif Display',serif;font-size:clamp(22px,3vw,32px);line-height:1.2;color:#0B2F5C;margin-bottom:16px;font-weight:400}
+.section p{font-size:15px;line-height:1.75;color:#3a3a3a;margin-bottom:16px}
+.section p:last-child{margin-bottom:0}
+.section p strong{color:#1a1a1a;font-weight:600}
+.tension{background:#E7EFF7;border:1px solid #A8C4E4;border-radius:10px;padding:32px 40px;margin:40px 0}
+.tension-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#1955A6;margin-bottom:12px}
+.tension h3{font-family:'DM Serif Display',serif;font-size:clamp(18px,2.5vw,24px);color:#0B2F5C;line-height:1.3;font-weight:400;margin-bottom:12px}
+.tension p{font-size:14px;line-height:1.7;color:#3a3a3a;margin:0}
+.senior-signal{background:linear-gradient(135deg,#0B2F5C 0%,#1955A6 100%);border-radius:10px;padding:32px 40px;margin:40px 0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px}
+.ss-item-label{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#A8C4E4;margin-bottom:8px}
+.ss-item-text{font-size:13px;line-height:1.65;color:#fff}
+.pain-table{width:100%;border-collapse:collapse;margin:24px 0;background:#fff;border-radius:10px;overflow:hidden;border:1px solid #E0E0E0}
+.pain-table th{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:#0B2F5C;padding:12px 16px;text-align:left}
+.pain-table td{font-size:13px;line-height:1.6;color:#3a3a3a;padding:12px 16px;border-top:1px solid #F0F0F0;vertical-align:top}
+.pain-table td:first-child{font-weight:600;color:#1955A6;white-space:nowrap;width:180px}
+.pain-table tr:hover td{background:#FAFCFF}
+.cr-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0}
+.cr-card{border:1px solid #E0E0E0;border-radius:10px;padding:20px 24px;background:#fff}
+.cr-card.response{border-color:#A8C4E4;background:#E7EFF7}
+.cr-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#1955A6;margin-bottom:10px}
+.cr-card p{font-size:13px;line-height:1.65;color:#3a3a3a;margin:0 0 6px}
+.cr-card ul{list-style:none;padding:0;margin:0}
+.cr-card ul li{font-size:13px;line-height:1.65;color:#3a3a3a;padding-left:16px;position:relative;margin-bottom:5px}
+.cr-card ul li::before{content:'→';position:absolute;left:0;color:#1955A6;font-size:11px;top:1px}
+.wire-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0}
+.wire-item{background:#fff;border:1px solid #E0E0E0;border-radius:8px;overflow:hidden}
+.wire-item img{width:100%;display:block}
+.wire-caption{font-family:'JetBrains Mono',monospace;font-size:9px;color:#909090;text-transform:uppercase;letter-spacing:.08em;padding:8px 10px;border-top:1px solid #F0F0F0}
+.screen-grid-hero{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.screen-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
+.screen-item{background:#fff;border:1px solid #E0E0E0;border-radius:8px;overflow:hidden}
+.screen-item img{width:100%;display:block}
+.screen-caption{font-family:'JetBrains Mono',monospace;font-size:9px;color:#909090;text-transform:uppercase;letter-spacing:.08em;padding:8px 10px;border-top:1px solid #F0F0F0}
+.outcomes-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin:24px 0}
+.outcome-card{border:1px solid #E0E0E0;border-radius:10px;padding:24px;background:#fff;border-top:3px solid #1955A6}
+.outcome-card-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#1955A6;margin-bottom:10px}
+.outcome-card h4{font-family:'DM Serif Display',serif;font-size:18px;color:#0B2F5C;margin-bottom:8px;font-weight:400}
+.outcome-card p{font-size:13px;line-height:1.65;color:#505050;margin:0}
+.android-note{background:#F0F7EE;border:1px solid #B8D9B0;border-radius:10px;padding:20px 24px;margin:32px 0;display:flex;gap:16px;align-items:flex-start}
+.android-icon{font-size:22px;flex-shrink:0}
+.android-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#2E7D32;margin-bottom:6px}
+.android-note p{font-size:13px;line-height:1.6;color:#3a3a3a;margin:0 0 8px}
+.android-note a{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#1955A6;text-decoration:none;border-bottom:1px solid #A8C4E4}
+.android-note a:hover{color:#0B2F5C}
+.pullquote{border-left:3px solid #1955A6;padding:16px 0 16px 24px;margin:32px 0}
+.pullquote p{font-family:'DM Serif Display',serif;font-size:clamp(16px,2vw,20px);line-height:1.45;color:#0B2F5C;font-style:italic;margin:0}
+.reflection{background:#F0F5FF;border:1px solid #C5D8F5;border-radius:10px;padding:28px 32px;margin-top:48px;display:flex;gap:20px;align-items:flex-start}
+.reflection-icon{font-size:20px;flex-shrink:0;margin-top:2px;color:#1955A6}
+.reflection-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#1955A6;margin-bottom:10px}
+.reflection p{font-size:14px;line-height:1.75;color:#3a3a3a;margin:0}
+.divider{height:1px;background:#E0E0E0;margin-top:48px}
+.footer{display:flex;flex-wrap:wrap;gap:8px;padding:24px 0 0}
+.tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;background:#F0F0F0;color:#505050;padding:5px 10px;border-radius:4px}
+@media(max-width:768px){
+  .hero-inner,.layout{padding:0 20px}
+  .senior-signal,.cr-row,.outcomes-grid{grid-template-columns:1fr}
+  .wire-grid,.screen-grid-4{grid-template-columns:1fr 1fr}
+  .screen-grid-hero{grid-template-columns:1fr 1fr}
+  .hero-stats{gap:28px}
+  .tension{padding:24px}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <h1 class="hook">Replacing paper checklists and manual entry with a <em>guided mobile experience</em> for aircraft oil sample submission — Honeywell and CAMP Systems.</h1>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">7</div>
+        <div class="hero-stat-label">Paper-process failures addressed</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">↓</div>
+        <div class="hero-stat-label">Resubmissions &amp; errors</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">SOAP</div>
+        <div class="hero-stat-label">Spectrometric Oil Analysis</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">Android</div>
+        <div class="hero-stat-label">Live on Google Play</div>
+      </div>
+    </div>
+    <div class="meta-row">
+      <div class="meta-item"><label>Client</label><span>Honeywell &amp; CAMP Systems</span></div>
+      <div class="meta-item"><label>Category</label><span>Aviation Maintenance</span></div>
+      <div class="meta-item"><label>Team</label><span>UX, Product, Engineering</span></div>
+      <div class="meta-item"><label>Platform</label><span>Mobile — Android</span></div>
+      <div class="meta-item"><label>Tools</label><span>Figma, Jira</span></div>
+    </div>
+    <div class="framework-badge">
+      <div class="framework-badge-dot"></div>
+      <span>CAMP Systems platform — Honeywell HEAT / HDA — Forge IoT APM — Ensemble real-time data</span>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="main">
+
+    <div id="problem" class="section">
+      <div class="section-label">The Problem</div>
+      <h2>Aircraft maintenance technicians were submitting oil samples on paper — incomplete data, misidentified filters, duplicate submissions, and costly resubmissions.</h2>
+      <p>Honeywell partnered with CAMP Systems to modernize the oil and filter sample submission process for aircraft maintenance teams. The legacy workflow relied on paper checklists, which led to frequent errors in sample identification, incorrect filter usage, wasted hours, and costly resubmissions.</p>
+      <p>The new mobile experience replaced manual entry with <strong>guided forms and validation logic</strong> — reducing errors, accelerating turnaround, and improving technician confidence in maintenance decisions.</p>
+
+      <div class="tension">
+        <div class="tension-label">The core tension</div>
+        <h3>Aviation maintenance demands zero-error data — but the paper-based workflow made errors nearly inevitable.</h3>
+        <p>In aircraft maintenance, a wrong filter selection or an incomplete sample submission isn't just inefficient — it can delay critical safety diagnostics. The paper process had no validation, no version control, and no real-time feedback. Technicians were working in the field without the system support to catch errors before they became costly resubmissions or compromised maintenance records.</p>
+      </div>
+
+      <table class="pain-table">
+        <thead>
+          <tr><th>Pain Point</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Fragmented Records</td><td>Technicians relied on scattered paper notes, making it difficult to track task history or ensure continuity across teams.</td></tr>
+          <tr><td>Manual Errors</td><td>Handwritten entries introduced inconsistencies, omissions, and legibility issues that compromised data integrity.</td></tr>
+          <tr><td>Delayed Access</td><td>Physical documents had to be retrieved manually, slowing down task execution and cross-team collaboration.</td></tr>
+          <tr><td>Limited Auditability</td><td>Paper trails lacked timestamped logs or version control, making it hard to verify actions or decisions.</td></tr>
+          <tr><td>Security Risks</td><td>Sensitive information was vulnerable to loss, theft, or unauthorized access due to lack of digital safeguards.</td></tr>
+          <tr><td>Inefficient Updates</td><td>Changes required reprinting or manual annotations, leading to outdated or conflicting records.</td></tr>
+          <tr><td>No Real-Time Sharing</td><td>Teams couldn't view or contribute to documentation simultaneously, hindering responsiveness and coordination.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="cr-row">
+        <div class="cr-card">
+          <div class="cr-label">Challenge</div>
+          <p>Fragmented workflows and inconsistent documentation practices disrupted task continuity and slowed maintenance reporting across the field.</p>
+        </div>
+        <div class="cr-card response">
+          <div class="cr-label">Response</div>
+          <ul>
+            <li>Collaborated with maintenance teams to analyze workflows, identify inefficiencies, and align design with real-world tasks</li>
+            <li>Surfaced pain points in the paper-based submission process including delays, duplication, and missing context</li>
+            <li>Included updated guidance and correction logic to support technician autonomy and reduce documentation errors</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="role" class="section">
+      <div class="section-label">My Role</div>
+      <h2>Led UX design for the GoDirect SOAP mobile app — from workflow analysis and wireframes through interactive prototypes and final UI.</h2>
+      <div class="senior-signal" style="margin-top:24px">
+        <div class="ss-item">
+          <div class="ss-item-label">What I owned</div>
+          <div class="ss-item-text">End-to-end UX — workflow analysis with maintenance teams, wireframes, interactive prototypes, modular UI component design, contextual filter recommendation logic, lab proximity mapping, and final mobile UI screens.</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-item-label">The platform ecosystem</div>
+          <div class="ss-item-text">Designed for the CAMP Systems platform — the primary interface where operators view SOAP results, compliance, and engine trend reports. Integrates Honeywell's HEAT and HDA diagnostic toolkits, with Ensemble handling real-time data transmission and Forge IoT APM powering predictive engine health analytics.</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-item-label">The stakes</div>
+          <div class="ss-item-text">Aviation maintenance has zero tolerance for data errors. Every UI decision — validation logic, filter selection guidance, lab routing — had a direct downstream impact on sample accuracy, turnaround time, and technician safety confidence in the field.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="complexity" class="section">
+      <div class="section-label">Process</div>
+      <h2>Complexity to Simplicity — mapping the full SOAP submission workflow into a guided, validated mobile experience.</h2>
+      <p>Developed wireframes and interactive prototypes to visualize technician workflows and validate usability before any development work began. Designed modular UI components for tail number lookup, sample history access, and real-time data display. Included contextual recommendations to guide technicians toward correct filter selection and SOAP kit usage. Mapped lab proximity logic to support sample routing and reduce turnaround time.</p>
+
+      <div class="wire-grid">
+        <div class="wire-item">
+          <img src="CAMP-images/wire_01.png" alt="SOAPP Form"/>
+          <div class="wire-caption">SOAPP — Sample Submission</div>
+        </div>
+        <div class="wire-item">
+          <img src="CAMP-images/wire_02.png" alt="Aircraft Detail"/>
+          <div class="wire-caption">Pointer BR2264 — Aircraft Detail</div>
+        </div>
+        <div class="wire-item">
+          <img src="CAMP-images/wire_03.png" alt="Draft Filter Details"/>
+          <div class="wire-caption">Draft BR2264 — Filter Details</div>
+        </div>
+        <div class="wire-item">
+          <img src="CAMP-images/wire_04.png" alt="Nearby SOAP Labs"/>
+          <div class="wire-caption">Nearby SOAP Labs — Lab Routing</div>
+        </div>
+      </div>
+
+      <div class="cr-row">
+        <div class="cr-card">
+          <div class="cr-label">Challenge Addressed</div>
+          <p>Mismatched controls and inefficient task flows disrupted technician efficiency and introduced friction in sample tracking and reporting — particularly around filter selection and lab routing.</p>
+        </div>
+        <div class="cr-card response">
+          <div class="cr-label">Design Response</div>
+          <ul>
+            <li>Developed wireframes and interactive prototypes to visualize technician workflows and validate usability</li>
+            <li>Designed modular UI components for tail number lookup, sample history, and real-time data display</li>
+            <li>Included contextual recommendations to guide technicians toward correct filter selection and SOAP kit usage</li>
+            <li>Mapped lab proximity logic to support sample routing and reduce turnaround time</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pullquote">
+        <p>"In aviation maintenance, validation isn't a UX nicety — it's the difference between a clean sample submission and a resubmission that delays a safety decision."</p>
+      </div>
+    </div>
+
+    <div id="outcomes" class="section">
+      <div class="section-label">Outcomes</div>
+      <h2>Streamlining oil sampling and reducing errors — the GoDirect SOAP app shipped on Android.</h2>
+      <p>The GoDirect SOAP mobile app reduced documentation errors, accelerated sample turnaround time, and improved technician confidence by delivering guided inputs, accurate filter-hour calculations, and real-time results that streamlined the entire oil analysis workflow.</p>
+
+      <div class="outcomes-grid">
+        <div class="outcome-card">
+          <div class="outcome-card-label">Reduced Resubmissions</div>
+          <h4>Fewer errors, fewer do-overs</h4>
+          <p>Guided input and validation logic eliminated the duplicate entries and filter misidentification that drove the majority of costly resubmissions under the paper process.</p>
+        </div>
+        <div class="outcome-card">
+          <div class="outcome-card-label">Improved Accuracy</div>
+          <h4>Real-time validation at point of entry</h4>
+          <p>Filter-hour calculations, contextual recommendations, and lab proximity routing reduced the manual errors and omissions that compromised data integrity in the field.</p>
+        </div>
+        <div class="outcome-card">
+          <div class="outcome-card-label">Faster Maintenance Decisions</div>
+          <h4>Proactive diagnostics, reduced wait time</h4>
+          <p>Real-time sample results enabled proactive diagnostics — connecting field submission directly to CAMP Systems' engine health and trend analysis platform via Honeywell's HEAT toolkit.</p>
+        </div>
+      </div>
+
+      <div class="android-note">
+        <div class="android-icon">⬇</div>
+        <div>
+          <div class="android-label">Live on Google Play — Android</div>
+          <p>The GoDirect SOAP app is available for Android on the Google Play Store.</p>
+          <a href="https://play.google.com/store/apps/details?id=com.honeywell.goDirectSOAP" target="_blank" rel="noopener">Download on Google Play ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="gallery" class="section">
+      <div class="section-label">Project Gallery</div>
+      <h2>The work</h2>
+      <div class="screen-grid-hero" style="margin-top:24px">
+        <div class="screen-item"><img src="CAMP-images/image_01.png" alt="Hero"/><div class="screen-caption">GoDirect SOAP — Landing</div></div>
+        <div class="screen-item"><img src="CAMP-images/image_02.png" alt="Sample submission"/><div class="screen-caption">Sample Submission</div></div>
+        <div class="screen-item"><img src="CAMP-images/image_03.png" alt="Aircraft lookup"/><div class="screen-caption">Aircraft Lookup</div></div>
+      </div>
+      <div class="screen-grid-4">
+        <div class="screen-item"><img src="CAMP-images/image_04.png" alt="Filter selection"/><div class="screen-caption">Filter Selection</div></div>
+        <div class="screen-item"><img src="CAMP-images/image_05.png" alt="Sample details"/><div class="screen-caption">Sample Details</div></div>
+        <div class="screen-item"><img src="CAMP-images/image_06.png" alt="Lab routing"/><div class="screen-caption">Nearby SOAP Labs</div></div>
+        <div class="screen-item"><img src="CAMP-images/image_07.png" alt="Results"/><div class="screen-caption">Analysis Results</div></div>
+      </div>
+      <div class="screen-grid-4">
+        <div class="screen-item"><img src="CAMP-images/image_08.png" alt="History"/><div class="screen-caption">Sample History</div></div>
+        <div class="screen-item"><img src="CAMP-images/image_09.png" alt="Draft"/><div class="screen-caption">Draft — Filter Details</div></div>
+        <div class="screen-item"><img src="CAMP-images/image_10.png" alt="Validation"/><div class="screen-caption">Validation State</div></div>
+        <div class="screen-item"><img src="CAMP-images/image_11.png" alt="Dashboard"/><div class="screen-caption">Summary Dashboard</div></div>
+      </div>
+    </div>
+
+    <div class="reflection">
+      <div class="reflection-icon">↩</div>
+      <div>
+        <div class="reflection-label">What I'd do differently</div>
+        <p>Get field technicians into usability testing earlier — and in the actual field environment. The workflow analysis was thorough, but testing prototypes in a conference room doesn't replicate the conditions under which this app actually gets used: on a tarmac, in bright sunlight, with gloves on, under time pressure. The final UI made good decisions about tap target size and contrast, but some of those decisions came from iteration feedback rather than upfront testing in context. For a mobile app in a safety-critical environment, environmental testing should be a first-class part of the research plan from day one.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="footer">
+      <span class="tag">Aviation Maintenance</span>
+      <span class="tag">Honeywell</span>
+      <span class="tag">CAMP Systems</span>
+      <span class="tag">Mobile UX</span>
+      <span class="tag">Android</span>
+      <span class="tag">SOAP Analysis</span>
+      <span class="tag">Engine Health</span>
+      <span class="tag">Forge IoT</span>
+      <span class="tag">Field UX</span>
+      <span class="tag">Guided Forms</span>
+      <span class="tag">Figma</span>
+      <span class="tag">Safety-Critical Design</span>
+    </div>
+
+  </div>
+</div>
+
+<script>
+</script>
+
+</body>
+</html>
