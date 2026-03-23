@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schneider — Process Maps</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;background:#fff;color:#0A1628;font-family:"Inter",sans-serif;-webkit-font-smoothing:antialiased;scrollbar-width:none;-ms-overflow-style:none;}
+html::-webkit-scrollbar,body::-webkit-scrollbar{display:none;}
+.wrap{width:100%;padding:48px 0 52px;}
+.hd{padding:0 24px 32px;}
+.etag{font-family:"DM Mono",monospace;font-size:11px;color:#1a2f5e;letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin-bottom:8px;}
+.htitle{font-family:"Libre Baskerville",serif;font-size:clamp(20px,3vw,28px);color:#0A1628;line-height:1.15;margin-bottom:8px;}
+.hsub{font-size:14px;color:#6B7C93;line-height:1.65;max-width:600px;}
+.artifacts{display:flex;flex-direction:column;gap:0;border-top:1px solid #D8E0EB;}
+.artifact{display:grid;grid-template-columns:1fr 2fr;border-bottom:1px solid #D8E0EB;}
+.artifact:last-child{border-bottom:none;}
+.art-meta{padding:24px;border-right:1px solid #D8E0EB;display:flex;flex-direction:column;justify-content:flex-start;}
+.art-num{font-family:"DM Mono",monospace;font-size:11px;color:#1a2f5e;letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin-bottom:8px;}
+.art-title{font-family:"Libre Baskerville",serif;font-size:16px;color:#0A1628;font-weight:700;line-height:1.25;margin-bottom:8px;}
+.art-desc{font-size:13px;color:#6B7C93;line-height:1.6;margin-bottom:14px;}
+.art-finding{background:#E8EDF5;border:1px solid #B8C8DF;border-radius:6px;padding:10px 12px;}
+.art-finding-label{font-family:"DM Mono",monospace;font-size:11px;color:#1a2f5e;letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin-bottom:4px;}
+.art-finding-text{font-size:12px;color:#2A4070;line-height:1.5;}
+.art-img{padding:20px;background:#F5F5F4;display:flex;align-items:center;justify-content:center;min-height:220px;}
+.art-img img{width:100%;height:auto;object-fit:contain;border-radius:6px;border:1px solid #E2E8F0;}
+@media(max-width:660px){.artifact{grid-template-columns:1fr;}.art-meta{border-right:none;border-bottom:1px solid #E2E8F0;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hd">
+    <div class="etag">Research · Discovery artifacts</div>
+    <h2 class="htitle">Mapping the problem before designing the solution.</h2>
+    <p class="hsub">Three artifacts produced directly from customer interviews and workflow observation sessions with Schneider facilities managers and maintenance technicians — recruited through internal Schneider channels. All three completed before any wireframe was drawn.</p>
+  </div>
+  <div class="artifacts">
+
+    <div class="artifact">
+      <div class="art-meta">
+        <div class="art-num">Artifact 01 · Field inquiry sketch</div>
+        <div class="art-title">How activation actually worked — drawn in the field.</div>
+        <div class="art-desc">Before any formal documentation, the activation flow was sketched by hand during customer interviews and workflow observation sessions with Schneider facilities managers. Front-end user steps, back-end system handoffs, and IDMS dependencies mapped in real time. Checkmarks show validated steps. Crossed boxes show where the process broke.</div>
+        <div class="art-finding">
+          <div class="art-finding-label">Key finding</div>
+          <div class="art-finding-text">Customers had to manually copy a Subscription ID from an email into a field inside EEO. No customer discovered this on their own — every participant required explicit guidance to complete the step.</div>
+        </div>
+      </div>
+      <div class="art-img">
+        <img src="SE-Inquiry_-_Copy.png" alt="Hand-drawn EEO activation inquiry sketch showing DSC purchase flow, IDMS back-end, and EEO front-end with validated and broken steps">
+      </div>
+    </div>
+
+    <div class="artifact">
+      <div class="art-meta">
+        <div class="art-num">Artifact 02 · Module awareness process map</div>
+        <div class="art-title">How users discovered new modules — and where the flow broke.</div>
+        <div class="art-desc">The new module awareness flow mapped the front-end and back-end touchpoints from login through to activation. The map revealed that the notification trigger existed in the back-end but had no corresponding front-end action that users could follow without guidance.</div>
+        <div class="art-finding">
+          <div class="art-finding-label">Key finding</div>
+          <div class="art-finding-text">Users received a "New Module" notification but had no clear path to act on it. Discovery and purchase were separated across systems with no unified flow connecting them.</div>
+        </div>
+      </div>
+      <div class="art-img">
+        <img src="SE_Process-Map4.jpg" alt="New Module Awareness process map showing front-end EEO and Exchange touchpoints with back-end system dependencies">
+      </div>
+    </div>
+
+    <div class="artifact">
+      <div class="art-meta">
+        <div class="art-num">Artifact 03 · Service blueprint</div>
+        <div class="art-title">The full activation journey mapped across every touchpoint.</div>
+        <div class="art-desc">The service blueprint documented user journeys, frontstage actions, and backstage system dependencies across the SE website, email messages, and the EEO platform. Three distinct user journey entry points mapped — each one revealing where users got lost or dropped off.</div>
+        <div class="art-finding">
+          <div class="art-finding-label">Key finding</div>
+          <div class="art-finding-text">No single touchpoint owned the full activation experience. Users were expected to navigate between the SE website, email, and EEO with no handoff guidance between any of them.</div>
+        </div>
+      </div>
+      <div class="art-img">
+        <img src="SE-BluePrint.png" alt="Service blueprint showing SE website and email message touchpoints, user journeys, line of interaction, and frontstage actions">
+      </div>
+    </div>
+
+
+    <div class="artifact">
+      <div class="art-meta">
+        <div class="art-num">Artifact 04 · Single-account activation flow</div>
+        <div class="art-title">Tomo purchases two bundles and activates them for the first time.</div>
+        <div class="art-desc">Process map showing what happens immediately after Tomo purchases Bundle A and Bundle B and logs into Mindt for the first time. A modal surfaces the subscriptions purchased — each bundle with its modules listed and an Activate button. A confirmation dialog asks Tomo to confirm before activating for the Mindt Choc account.</div>
+        <div class="art-finding">
+          <div class="art-finding-label">Key finding</div>
+          <div class="art-finding-text">Even the simplest activation scenario — one user, one account, two bundles — required a confirmation step that no customer knew to expect. The mechanism (modal vs inline) was still an open question during research.</div>
+        </div>
+      </div>
+      <div class="art-img">
+        <img src="Process-Map-2.jpg" alt="Single-account activation flow showing Tomo activating Bundle A and Bundle B for the Mindt account with confirmation dialog">
+      </div>
+    </div>
+
+    <div class="artifact">
+      <div class="art-meta">
+        <div class="art-num">Artifact 05 · Multi-account activation flow</div>
+        <div class="art-title">Tomo switches accounts — Bundle A already activated, Bundle B available for a new account.</div>
+        <div class="art-desc">The same subscriptions purchased modal, but now Tomo is logged into the BurgerKing account. Bundle A shows as already activated for Mindt — greyed out. Bundle B can be activated for the Burger King account. A new Activation ID is generated. This is the multi-account complexity that was completely invisible in the existing UI and the root cause of most activation failures observed in research.</div>
+        <div class="art-finding">
+          <div class="art-finding-label">Key finding</div>
+          <div class="art-finding-text">Customers managing multiple accounts had no way to see which bundles were already activated, for which account, or whether a new activation was possible. Every multi-account customer encountered this as a failure — not a feature.</div>
+        </div>
+      </div>
+      <div class="art-img">
+        <img src="Process-Map-3.jpg" alt="Multi-account activation flow showing Bundle A already activated for Mindt, Bundle B available for BurgerKing account with New Activation ID">
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
